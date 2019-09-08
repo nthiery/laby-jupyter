@@ -18,6 +18,7 @@ authors! Thank you for making this possible by sharing your work !!!
 
 This alpha version:
 - supports only the C++ programming language
+- supports only the French language
 - is likely to have bugs or missing features
 
 Please [try it out online](https://mybinder.org/v2/gh/nthiery/laby-jupyter/master?filepath=notebooks) and report bugs!
