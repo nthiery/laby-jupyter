@@ -1,0 +1,43 @@
+map:
+o o o o o o o o
+o → . . r . . x
+o o o o o o o o
+
+title:
+text		Still one
+ca_ES.UTF-8	Encara n'hi ha un
+cs_CZ.UTF-8	Ještě jeden
+da_DK.UTF-8	Stadig en
+de_DE.UTF-8	Noch einer
+en_US.UTF-8	Still one
+es_MX.UTF-8	Aún hay uno
+fr_FR.UTF-8	Encore un
+gl_ES.UTF-8	Aínda outro
+hu_HU.UTF-8	Első kihívás
+it_IT.UTF-8	Ancora uno
+nl_NL.UTF-8	Nog één
+pl_PL.UTF-8	Jeszcze raz kamyk
+pt_BR.UTF-8	Ainda tem um
+ru_RU.UTF-8	Ещё раз
+sq_AL.UTF-8	Prapë një tjetër
+sv_SV.UTF-8	Fortfarande en
+tr_TR.UTF-8	Hala bir tane var
+
+comment:
+text		Again, there is a rock. It's inside a corridor. How do you get through?
+ca_ES.UTF-8	De nou, hi ha una pedra. És al mig d'un passadís. Com el travessaràs?
+cs_CZ.UTF-8	Je tu ještě jeden kámen. Je uprostřed chodby. Jak se přes něj dostaneš?
+da_DK.UTF-8	Der er en sten igen. Den er i en korridor. Hvordan kommer du igennem?
+de_DE.UTF-8	Da ist noch ein Stein. Er ist in einem Gang. Wie kommst du durch?
+en_US.UTF-8	Again, there is a rock. It's inside a corridor. How do you get through?
+es_MX.UTF-8	De nuevo hay una piedra. Esta en un pasillo. ¿Como lo atravesarás?
+fr_FR.UTF-8	Un caillou au milieu d'un couloir. Comment passer ?
+gl_ES.UTF-8	De novo, hai unha rocha. Está no interior dun corredor. Como pasar a través del?
+hu_HU.UTF-8	Megint egy szikla! És pont a folyosó előtt! Na, hogy jutsz keresztül?
+it_IT.UTF-8	Una pietre in mezzo al corridoio. Come riuscire a passare?
+nl_NL.UTF-8	Weer een steen. Deze ligt in een gang. Hoe kom je er doorheen?
+pl_PL.UTF-8	Tym razem kamyk jest w wąskim korytarzu. Jak robak może uciec?
+pt_BR.UTF-8	Denovo, uma pedra. Dentro de um corredor, como passar por ela?
+ru_RU.UTF-8	И снова камень! Он внутри коридора. Как же пройти через него?
+sq_AL.UTF-8	Prapë ka një gur. Në mes të koridorit. Si do tia bëni për ta kaluar?
+tr_TR.UTF-8	Yolumuzda tekrar taş var. Ama bu sefer bir koridordasınız. Çıkışa nasıl ulaşacaksınız?

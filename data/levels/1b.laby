@@ -1,0 +1,48 @@
+map:
+o o o o o o o
+o . . o . . x
+o . . r . . o
+o ↑ . o . . o
+o o o o o o o
+
+help:
+rocks
+
+title:
+text		Oh a rock
+ca_ES.UTF-8	Oh, una pedra
+cs_CZ.UTF-8	Pozor kámen
+da_DK.UTF-8	Åh, en sten
+de_DE.UTF-8	Oha, ein Stein
+en_US.UTF-8	Oh a rock
+es_MX.UTF-8	Oh, una piedra
+fr_FR.UTF-8	Oh le caillou
+gl_ES.UTF-8	Vaites! unha rocha
+hu_HU.UTF-8	Óóó, egy szikla
+it_IT.UTF-8	Oh, una Roccia
+nl_NL.UTF-8	Hee, een steen
+pl_PL.UTF-8	Oj, kamyk!
+pt_BR.UTF-8	Oh, uma pedra
+ru_RU.UTF-8	О, камень
+sq_AL.UTF-8	Oh, një gur
+sv_SV.UTF-8	Å, en sten
+tr_TR.UTF-8	Eyvah bir kaya
+
+comment:
+text		A rock is in the way. Use specific instructions to take and drop rocks.
+ca_ES.UTF-8	Hi ha una pedra al mig del camí. Utilitza instruccions específiques per a agafar i deixar anar pedres.
+cs_CZ.UTF-8	V cestě stojí kámen. Použij přikazy abys vzal a položil kámen.
+da_DK.UTF-8	En sten er i vejen. Brug specifikke instruktioner til at samle sten op og lægge dem igen.
+de_DE.UTF-8	Ein Stein ist im Weg. Benutze genaue Anleitungen um den Stein aufzuheben und abzulegen.
+en_US.UTF-8	A rock is in the way. Use specific instructions to take and drop rocks.
+es_MX.UTF-8	Una piedra en el camino. Usa instrucciones específicas para coger y dejar piedras.
+fr_FR.UTF-8	Un caillou te barre la route. Il faut utiliser les instructions qui permettent de prendre et de poser les cailloux.
+gl_ES.UTF-8	Unha rocha no medio do camiño. Ten que empregar as instrucción que permitan coller e soltar as rochas.
+hu_HU.UTF-8	Egy szikla van az utadban. Használd a különleges utasításokat, hogy felemeld és letedd a sziklát.
+it_IT.UTF-8	Una roccia ti sbarra la strada. Devi utilizzare le funzioni che ti permettono di prendere et lasciare la roccia.
+nl_NL.UTF-8	Een steen zit in de weg. Gebruik specifieke instructies om stenen op te tillen en te laten vallen.
+pl_PL.UTF-8	Na drodze robaka znajduje się kamyk. Użyj specjalnych instrukcji, by go podnieść i upuścić. Gdy przemieścisz kamyk, to robak będzie mógł się wydostać.
+pt_BR.UTF-8	Tem uma pedra no caminho. Use instruções específicas para pegar e largar pedras.
+ru_RU.UTF-8	На пути камень. Используйте специальные команды, чтобы поднимать и выбрасывать камни.
+sq_AL.UTF-8	Një gur është në mes të rrugës. Përdor udhëzimet e veçanta për të marrë dhe për të lënë gurët.
+tr_TR.UTF-8	Yolumuzun üzerinde bir kaya var. Talimatları kullanarak kayayı yolunuzdan çekin.

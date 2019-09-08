@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg id="svg2" xmlns="http://www.w3.org/2000/svg" height="32" width="32" version="1.0">
+ <g id="layer1" stroke="#000" stroke-width="1px" stroke-linejoin="bevel" stroke-linecap="butt" fill="none" transform="matrix(1,0,0,1,0,0)">
+  <path id="path1" d="M27.054,13.741c0,3.329-2.458,6.028-5.492,6.028-3.033,0-5.491-2.699-5.491-6.028s2.458-6.0283,5.491-6.0283c3.034,0,5.492,2.6993,5.492,6.0283z" transform="translate(-11.78571,2.589285)" fill="#808080"/>
+  <path id="path2" d="M24.018,6.6429l-3.75,2.6785-1.697,3.9286"/>
+  <path id="path3" d="M32.054,16.509c0,2.046-1.679,3.705-3.75,3.705s-3.75-1.659-3.75-3.705,1.679-3.705,3.75-3.705,3.75,1.659,3.75,3.705z" transform="translate(-11.78571,-0.178571)" fill="#808080"/>
+  <path id="path4" d="M28.661,17c0,2.318-1.799,4.197-4.018,4.197s-4.018-1.879-4.018-4.197,1.799-4.197,4.018-4.197,4.018,1.879,4.018,4.197z" transform="translate(-1.428571,-0.803571)" fill="#808080"/>
+  <path id="path5" d="M4.2857,1.9107l5.9823,5.7143,0.446,2.589"/>
+  <path id="path6" d="M18.393,5.5714l-2.589,2.4107-0.715,4.5539"/>
+  <path id="path7" d="M10.625,22.179l-0.268,3.214-6.5177,4.018"/>
+  <path id="path8" d="M14.286,19.768v4.821l2.678,3.393"/>
+  <path id="path9" d="M18.036,20.125l1.25,5.446,3.303,1.608"/>
+  <path id="path10" d="M24.464,13.964l2.232-2.232"/>
+  <path id="path11" d="M24.732,18.429l1.964,2.232"/>
+  <path id="path12" stroke-linejoin="miter" d="M27.143,15.661l1.696,0.178"/>
+  <path id="path13" stroke-linejoin="miter" d="M28.571,16.821l-1.25,0.358"/>
+ </g>
+</svg>
