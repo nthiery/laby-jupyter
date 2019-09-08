@@ -162,21 +162,4 @@ auto laby_level(std::string level) {
     return app;
 }
 
-#define LABY(s) \
-    auto app = laby_level(s); \
-    auto Caillou     = Tile::Rock;      \
-    auto PetitCaillou= Tile::SmallRock; \
-    auto Toile       = Tile::Web;       \
-    auto PetiteToile = Tile::SmallWeb;  \
-    auto Sortie      = Tile::Exit;      \
-    auto Mur         = Tile::Wall;      \
-    auto Vide        = Tile::Void;      \
-    auto avance  = std::bind(&LabySVGViewPlayerApp::avance,  app); \
-    auto droite  = std::bind(&LabySVGViewPlayerApp::droite,  app); \
-    auto gauche  = std::bind(&LabySVGViewPlayerApp::gauche,  app); \
-    auto pose    = std::bind(&LabySVGViewPlayerApp::pose,    app); \
-    auto prend   = std::bind(&LabySVGViewPlayerApp::prend,   app); \
-    auto ouvre   = std::bind(&LabySVGViewPlayerApp::ouvre,   app); \
-    auto regarde = std::bind(&LabySVGViewPlayerApp::regarde, app); \
-
 #endif

@@ -389,6 +389,12 @@ class Player {
             step_backward();
     }
 
+    void reset() {
+        time = 0;
+        history = std::vector<Labyrinth>({history[0]});
+        update();
+    }
+
     void begin() {
         time = 0;
         update();
@@ -440,6 +446,10 @@ class LabyBaseApp {
     LabyrinthView view;
     Player player;
     LabyBaseApp(Labyrinth labyrinth) : view(labyrinth), player(view) {
+    }
+
+    auto debut() {
+        player.reset();
     }
 
     auto avance() {
