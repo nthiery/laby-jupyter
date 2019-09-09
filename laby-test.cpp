@@ -337,6 +337,19 @@ void testBaseDir() {
     // std::cout << "data directory: " << __datadir__ << std::endl;
 }
 
+void testRandomize() {
+    Labyrinth("W").html();
+    Labyrinth l = Labyrinth::load_level("3a");
+    l.html();
+    Labyrinth c = l; c.randomize();
+    c = l; c.randomize();
+    c = l; c.randomize();
+}
+
+void testRandomizedPlayer() {
+    auto app  = LabyApp(Labyrinth::load_level("3a"));
+    auto app2 = LabyApp(Labyrinth::load_level("3b"));
+}
 
 int main() {
     testLabyrinth();
@@ -346,4 +359,6 @@ int main() {
     testHtml();
     //testRun();
     testBaseDir();
+    testRandomize();
+    testRandomizedPlayer();
 }

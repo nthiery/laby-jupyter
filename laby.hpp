@@ -1,6 +1,7 @@
 #ifndef LABY_H
 #define LABY_H
 
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -66,14 +67,14 @@ enum class Direction { North, West, South, East };
 std::vector<Position> directions = { {-1,0}, {-0,1}, {1,0}, {0,1} };
 
 enum Tile {
-    AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside
+    AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb
 };
 
 std::vector<std::string> tilenames = {
-    "ant-e", "ant-n", "ant-s", "ant-w", "exit", "nrock", "nweb", "rock", "void", "wall", "web"
+    "ant-e", "ant-n", "ant-s", "ant-w", "exit", "nrock", "nweb", "rock", "void", "wall", "web", "outside", "random_rock", "random_web"
 };
 std::vector<std::string> tilechars = {
-    u8"→", u8"↑", u8"↓", u8"←", "x", "?", "?", "r", ".", "o", "w"
+    u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W"
 };
 
 enum PlayDirection { Forward, Backward, None };
@@ -220,6 +221,42 @@ class Labyrinth {
             view[position.i][position.j] = ant_tiles[int(direction)];
         return view;
     }
+
+    void randomize() {
+        int n_random_rocks = 0;
+        int n_random_webs = 0;
+        for (auto row: board) {
+            for (auto c: row) {
+                if (c == RandomRock)
+                    n_random_rocks ++;
+                if (c == RandomWeb)
+                    n_random_webs ++;
+            }
+        }
+        int r_rock = n_random_rocks ? rand() % n_random_rocks : 0;
+        int r_web  = n_random_webs  ? rand() % n_random_webs  : 0;
+        n_random_rocks = 0;
+        n_random_webs = 0;
+        for (auto &row: board) {
+            for (auto &c: row) {
+                if (c == RandomRock) {
+                    if (n_random_rocks == r_rock)
+                        c = SmallRock;
+                    else
+                        c = Rock;
+                    n_random_rocks ++;
+                }
+                if (c == RandomWeb) {
+                    if (n_random_webs == r_web)
+                        c = SmallWeb;
+                    else
+                        c = Web;
+                    n_random_webs ++;
+                }
+            }
+        }
+    }
+
     void win() {
         message = "J'ai gagné!";
     }
@@ -333,6 +370,7 @@ class LabyrinthView {
 class Player {
     LabyrinthView &view;
     public: // for debuging
+    Labyrinth original_value;
     std::vector<Labyrinth> history;
     int time;
 
@@ -353,11 +391,11 @@ class Player {
     public:
     Player(LabyrinthView &_view):
         view(_view),
-        time(0),
+        original_value(view.value),
         play_direction(PlayDirection::Forward),
         play_fps(1),
         timer(std::bind(&Player::tick, this), play_fps) {
-        history.push_back(view.value);
+        reset();
     }
 
     void run() {
@@ -391,7 +429,9 @@ class Player {
 
     void reset() {
         time = 0;
-        history = std::vector<Labyrinth>({history[0]});
+        auto randomized = original_value;
+        randomized.randomize();
+        history = std::vector<Labyrinth>({randomized});
         update();
     }
 
