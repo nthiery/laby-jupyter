@@ -413,6 +413,8 @@ class Player {
     }
 
     void set_value(Labyrinth value) {
+        if ( history.size() > 10000 )
+            throw std::runtime_error("Votre programme a pris plus de 1000 étapes");
         history.push_back(value);
         if (not timer.running() and time == history.size() - 2 ) {
             time++;
