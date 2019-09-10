@@ -301,13 +301,17 @@ class Labyrinth {
     }
 
     bool ouvre() {
-        if ( regarde() == Tile::Exit ) {
-            position = devant();
-            win();
-            return true;
+        if ( regarde() != Tile::Exit ) {
+            message = "Je ne peux pas ouvrir.";
+            return false;
         }
-        message = "Je ne peux pas ouvrir.";
-        return false;
+        if ( carry != Tile::Void ) {
+            message = "Je ne peux pas ouvrir en portant un objet.";
+            return false;
+        }
+        position = devant();
+        win();
+        return true;
     }
 };
 
