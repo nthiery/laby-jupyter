@@ -64,7 +64,7 @@ struct Position {
 };
 
 enum class Direction { North, West, South, East };
-std::vector<Position> directions = { {-1,0}, {-0,1}, {1,0}, {0,1} };
+std::vector<Position> directions = { {-1,0}, {0,-1}, {1,0}, {0,1} };
 
 enum Tile {
     AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb
