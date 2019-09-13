@@ -29,9 +29,25 @@ class LabyrinthTextView: public LabyrinthView {
     }
 };
 
-class LabyrinthSVGView: public LabyrinthView {
+class LabyrinthSVGViewMonolith: public LabyrinthView {
     public:
     xw::html widget;
+    auto display() {
+        return widget.display();
+    }
+    LabyrinthSVGViewMonolith(Labyrinth labyrinth) : LabyrinthView(labyrinth) {
+        update();
+    };
+    void update() {
+        widget.value = value.html();
+    }
+};
+
+class LabyrinthSVGView: public LabyrinthView {
+    public:
+    xw::vbox widget;
+    std::vector<std::vector<xw::html>> cells;
+    Dimension size;
     auto display() {
         return widget.display();
     }
@@ -39,7 +55,22 @@ class LabyrinthSVGView: public LabyrinthView {
         update();
     };
     void update() {
-        widget.value = value.html();
+        if ( value.size() != size ) {
+            size = value.size();
+            // Reconstruct the array of tiles
+            widget = xw::vbox();
+            cells = std::vector<std::vector<xw::html>>(size.i);
+            for (auto &cell_row: cells) {
+                xw::hbox row;
+                cell_row = std::vector<xw::html>(size.j);
+                for (auto &c: cell_row)
+                    row.add(c);
+                widget.add(std::move(row));
+            }
+        }
+        for (int i=0; i<size.i; i++)
+            for (int j=0; j<size.j; j++)
+                cells[i][j].value = std::string("<img src='")+filename(value.get(Position(i,j)))+"' width=32 height=32>";
     }
 };
 
