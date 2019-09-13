@@ -61,7 +61,23 @@ unsigned char utf8_len(const std::string& str)
 struct Position {
     int i;
     int j;
+    public:
+    Position(): i(0), j(0) {};
+    Position(int _i, int _j): i(_i), j(_j) {};
+    bool operator ==(Position pos2) {
+        return ( i == pos2.i ) and ( j == pos2.j );
+    };
+    bool operator !=(Position pos2) {
+        return ! ( *this == pos2 );
+    };
 };
+std::ostream& operator<<(std::ostream& os, const Position& pos)
+{
+    os << "(" << pos.i << ", " << pos.j << ")";
+    return os;
+}
+
+using Dimension = Position;
 
 enum class Direction { North, West, South, East };
 std::vector<Position> directions = { {-1,0}, {0,-1}, {1,0}, {0,1} };
@@ -88,6 +104,10 @@ Tile char_to_tile(std::string c) {
         }
     }
     throw std::runtime_error("no tile found");
+}
+
+std::string filename(Tile tile) {
+    return LABY_DATADIR+"/tiles/"+tilenames[tile]+".svg";
 }
 
 class Board : public std::vector<std::vector<Tile>> {
@@ -198,7 +218,7 @@ class Labyrinth {
         for ( auto line: view() ) {
             s += "    <tr>\n";
             for (int j=0; j<line.size(); j++ ) {
-                s += "        <td><img src='"+LABY_DATADIR+"/tiles/"+tilenames[line[j]]+".svg'></td>\n";
+                s += "        <td><img src='"+filename(line[j])+"'></td>\n";
             }
             s += "    </tr>\n";
         }
@@ -220,6 +240,20 @@ class Labyrinth {
             // The ant is on the board; display it
             view[position.i][position.j] = ant_tiles[int(direction)];
         return view;
+    }
+
+    Tile get(Position pos) {
+        if (pos == position)
+            return ant_tiles[int(direction)];
+        else
+            return board.get(pos);
+    }
+
+    Dimension size() {
+        Dimension size;
+        size.i = board.size();
+        size.j = size.i == 0 ? 0 : board[0].size();
+        return size;
     }
 
     void randomize() {

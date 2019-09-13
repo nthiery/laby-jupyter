@@ -11,6 +11,10 @@ const string s =
         u8"o . ↑ . . . o\n"
         u8"o o o o o o o\n";
 
+void testFilename() {
+    ASSERTEQ("data/tiles/wall.svg", filename(Tile::Wall));
+}
+
 void testLabyrinth() {
     auto l = Labyrinth(s);
     ASSERTEQ( l.to_string(),
@@ -138,6 +142,27 @@ void testLabyrinth() {
            u8"o . . . . . o\n"
            u8"o . . . . . o\n"
            u8"o o o o o o o\n");
+}
+
+void testSize() {
+    auto l = Labyrinth("");
+    ASSERTEQ( l.size(), Dimension(0, 0) );
+    l = Labyrinth(s);
+    ASSERTEQ( l.size(), Dimension(5, 7) );
+}
+
+void testViewAt() {
+    auto l = Labyrinth(s);
+    auto view = l.view();
+    auto size = l.size();
+    for (int i=-1; i<=size.i; i++) {
+        for (int j=-1; j<=size.j; j++) {
+            auto pos = Position(i,j);
+            ASSERTEQ(l.get(pos), view.get(pos));
+        }
+    }
+    ASSERTEQ(Tile::Outside, view.get(Position(5,0)));
+    ASSERTEQ(Tile::Outside, view.get(Position(0,7)));
 }
 
 void testLabyrinthValueSemantic() {
@@ -352,6 +377,8 @@ void testRandomizedPlayer() {
 }
 
 int main() {
+    testFilename();
+    testViewAt();
     testLabyrinth();
     testLabyrinthValueSemantic();
     testLabyApp();
