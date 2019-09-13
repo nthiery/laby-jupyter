@@ -23,6 +23,7 @@ void testLabyrinth() {
         u8"o . . . . . o\n"
         u8"o . ↑ . . . o\n"
         u8"o o o o o o o\n");
+    ASSERT( not l.won() );
     ASSERT( l.avance() );
     ASSERTEQ( l.to_string(),
            u8"o o o o o x o\n"
@@ -30,6 +31,7 @@ void testLabyrinth() {
            u8"o . ↑ . . . o\n"
            u8"o . . . . . o\n"
            u8"o o o o o o o\n");
+    ASSERT( not l.won() );
     ASSERT( l.avance() );
     ASSERTEQ( l.to_string(),
            u8"o o o o o x o\n"
@@ -136,12 +138,14 @@ void testLabyrinth() {
            u8"o . . . . . o\n"
            u8"o o o o o o o\n");
     ASSERT( not l.avance() );
+    ASSERT( not l.won() );
     ASSERTEQ( l.to_string(),
            u8"o o o o o ↑ o\n"
            u8"o . . . . . o\n"
            u8"o . . . . . o\n"
            u8"o . . . . . o\n"
            u8"o o o o o o o\n");
+    ASSERT( l.won() );
 }
 
 void testSize() {

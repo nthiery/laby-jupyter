@@ -139,6 +139,7 @@ class Labyrinth {
     Direction direction = Direction::North;
     Tile carry = Void;
     std::string message;
+    bool _won = false;
     public:
 
     //////////////////////////////////////////////////////////////////////////
@@ -292,7 +293,11 @@ class Labyrinth {
     }
 
     void win() {
+        _won = true;
         message = "J'ai gagné!";
+    }
+    bool won() {
+        return _won;
     }
 
     Position devant() {
@@ -518,6 +523,10 @@ class Player {
         if (play_direction != PlayDirection::None)
             timer.set_fps(fps);
     }
+
+    bool won() {
+        return history[history.size()-1].won();
+    }
 };
 
 template <class LabyrinthView>
@@ -570,6 +579,9 @@ class LabyBaseApp {
         auto res = value.ouvre();
         player.set_value(value);
         return res;
+    }
+    bool won() {
+        return player.won();
     }
 };
 

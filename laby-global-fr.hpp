@@ -1,6 +1,10 @@
 #ifndef LABY_GLOBAL_FR_H
 #define LABY_GLOBAL_FR_H
 
+#ifndef ASSERT
+#define ASSERT(C) if ( !(C) ) { throw std::runtime_error("\x1b[48;5;224mTest failed: "#C); }
+#endif
+
 #include "laby-widget.hpp"
 
 LabySVGViewPlayerApp *app;
@@ -19,6 +23,7 @@ auto pose()    { return app -> pose();    }
 auto prend()   { return app -> prend();   }
 auto ouvre()   { return app -> ouvre();   }
 auto regarde() { return app -> regarde(); }
+bool a_gagne() { return app -> won();     }
 
 void LABY(std::string s) {
     app = laby_level(s);
