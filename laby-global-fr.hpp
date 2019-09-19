@@ -29,4 +29,8 @@ void LABY(std::string s) {
     app = laby_level(s);
 }
 
+void LABY_BAR(std::string s) {
+    app = laby_bar(s);
+}
+
 #endif

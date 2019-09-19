@@ -186,6 +186,13 @@ class LabySVGViewPlayerApp: public LabyBaseApp<LabyrinthSVGView> {
     }
 };
 
+auto laby_bar(std::string s) {
+    auto app = new LabySVGViewPlayerApp(Labyrinth(s));
+    app->player.run();
+    app->display();
+    return app;
+}
+
 auto laby_level(std::string level) {
     auto app = new LabySVGViewPlayerApp(Labyrinth::load_level(level));
     app->player.run();
