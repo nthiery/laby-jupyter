@@ -171,11 +171,11 @@ class PlayerView {
 //     def value_changed(self, change):
 //         self._model.set_value(change.new)
 
-class LabySVGViewPlayerApp: public LabyBaseApp<LabyrinthSVGView> {
+class LabySVGViewPlayerApp: public LabyBaseApp<LabyrinthSVGViewMonolith> {
     xw::vbox widget;
     PlayerView controls;
     public:
-    LabySVGViewPlayerApp(Labyrinth labyrinth) : LabyBaseApp<LabyrinthSVGView>(labyrinth), controls(player) {
+    LabySVGViewPlayerApp(Labyrinth labyrinth) : LabyBaseApp<LabyrinthSVGViewMonolith>(labyrinth), controls(player) {
         widget = xw::vbox();
         widget.add(view.widget);
         widget.add(controls.widget);
