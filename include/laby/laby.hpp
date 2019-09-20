@@ -12,8 +12,11 @@
 const std::string LABY_FILE = __FILE__;
 const std::string LABY_BASENAME = "include/laby/laby.hpp";
 const std::string LABY_PREFIX   = LABY_FILE.substr(0, LABY_FILE.length()- LABY_BASENAME.length());
-const std::string LABY_SHAREDIR  = LABY_PREFIX+"share/laby";
-
+const std::string LABY_SHAREDIR = LABY_PREFIX+"share/laby/";
+const std::string LABY_TILEDIR  = LABY_SHAREDIR+"tiles/";
+const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels/";
+bool use_inline_svg=true;
+std::vector<std::string> svg_images;
 
 std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
 {
@@ -82,6 +85,7 @@ using Dimension = Position;
 enum class Direction { North, West, South, East };
 std::vector<Position> directions = { {-1,0}, {0,-1}, {1,0}, {0,1} };
 
+// Assumption: fake tiles that can't be displayed are at the end, after "outside"
 enum Tile {
     AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb
 };
@@ -106,8 +110,29 @@ Tile char_to_tile(std::string c) {
     throw std::runtime_error("no tile found");
 }
 
+std::string read_file(std::string filename) {
+    std::ifstream t(filename);
+    if ( not t )
+        throw std::runtime_error(std::string("file not found: ")+filename);
+    std::stringstream buffer;
+    buffer << t.rdbuf();
+    return buffer.str();
+}
+
 std::string filename(Tile tile) {
     return "/nbextensions/laby/"+tilenames[tile]+".svg";
+}
+
+std::string svg_image(Tile tile) {
+    if ( use_inline_svg ) {
+        if ( svg_images.size() == 0 )
+            for ( auto tilename: tilenames ) {
+                if ( tilename == "outside" ) break;
+                svg_images.push_back(read_file(LABY_TILEDIR + tilename + ".svg"));
+            }
+        return svg_images[tile];
+    }
+    return "<img src='"+filename(tile)+"' width=32 height=32>";
 }
 
 class Board : public std::vector<std::vector<Tile>> {
@@ -154,7 +179,7 @@ class Labyrinth {
     static
     Labyrinth load_level(std::string level) {
         // TODO: Should use the analogue of os.path
-        return load(LABY_SHAREDIR+"/"+level+".laby");
+        return load(LABY_LEVELDIR+"/"+level+".laby");
     }
 
     static
@@ -219,7 +244,7 @@ class Labyrinth {
         for ( auto line: view() ) {
             s += "    <tr>\n";
             for (int j=0; j<line.size(); j++ ) {
-                s += "        <td><img src='"+filename(line[j])+"'></td>\n";
+                s += "        <td>"+svg_image(line[j])+"</td>\n";
             }
             s += "    </tr>\n";
         }

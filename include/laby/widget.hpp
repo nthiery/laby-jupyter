@@ -70,7 +70,7 @@ class LabyrinthSVGView: public LabyrinthView {
         }
         for (int i=0; i<size.i; i++)
             for (int j=0; j<size.j; j++)
-                cells[i][j].value = std::string("<img src='")+filename(value.get(Position(i,j)))+"' width=32 height=32>";
+                cells[i][j].value = svg_image(value.get(Position(i,j)));
     }
 };
 

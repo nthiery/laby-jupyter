@@ -21,8 +21,8 @@ setup(
     ],
     data_files=[
         # like `jupyter nbextension install --sys-prefix`
-        ("share/jupyter/nbextensions/laby", glob.glob("nbextensions/laby/*.svg")),
-        ("share/laby",                      glob.glob("share/laby/*.laby")),
+        ("share/laby/levels",               glob.glob("share/laby/levels/*.laby")),
+        ("share/laby/tiles",                glob.glob("share/laby/tiles/*.svg")),
         ("include/laby",                    glob.glob("include/laby/*.hpp")),
     ],
 )

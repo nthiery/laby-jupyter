@@ -34,8 +34,7 @@ Then:
 After this step, you should be able to enjoy all the [notebooks](notebooks/).
 
 The installation procedure is primitive and assumes a standard
-environment with <PREFIX>/include, <PREFIX>/share and jupyter
-installed in <PREFIX>/share/jupyter/.
+environment with <PREFIX>/include, <PREFIX>/share.
 
 ## Tests
 

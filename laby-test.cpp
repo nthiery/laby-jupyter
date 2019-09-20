@@ -11,6 +11,10 @@ const string s =
         u8"o . ↑ . . . o\n"
         u8"o o o o o o o\n";
 
+void testSvgImage() {
+    svg_image(Tile::Exit);
+}
+
 void testFilename() {
     ASSERTEQ(filename(Tile::Wall), "/nbextensions/laby/wall.svg");
 }
@@ -289,7 +293,7 @@ void testLabyApp() {
 }
 
 void testLoad() {
-    auto l = Labyrinth::load(LABY_SHAREDIR + "/0.laby");
+    auto l = Labyrinth::load(LABY_LEVELDIR + "0.laby");
     ASSERTEQ(l.to_string(),
            u8"o o o o o o\n"
            u8"o w . . . x\n"
@@ -304,51 +308,52 @@ void testLoad() {
 void testHtml() {
     Labyrinth l(s);
     l.pose();
+    use_inline_svg = false;
     ASSERTEQ(l.html(), R"html(<table>
     <tr>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/exit.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
     </tr>
     <tr>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
     </tr>
     <tr>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
     </tr>
     <tr>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/ant-n.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/void.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/ant-n.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
     </tr>
     <tr>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
-        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
     </tr>
 </table>
 <pre>Je ne peux pas poser.</pre>
@@ -373,7 +378,7 @@ void testRun() {
 void testBaseDir() {
     // This test assumes the test are run in the source directory
     ASSERTEQ(LABY_PREFIX, "");
-    ASSERTEQ(LABY_SHAREDIR, "share/laby");
+    ASSERTEQ(LABY_SHAREDIR, "share/laby/");
     // std::cout << "base directory: " << __basedir__ << std::endl;
     // std::cout << "data directory: " << __datadir__ << std::endl;
 }
@@ -393,6 +398,7 @@ void testRandomizedPlayer() {
 }
 
 int main() {
+    testSvgImage();
     testFilename();
     testViewAt();
     testLabyrinth();
