@@ -376,6 +376,17 @@ class Labyrinth {
         return false;
     }
 
+    bool sow() {
+        Tile tile = board.get(position);
+        if ( tile == Tile::Web or
+             tile == Tile::Exit ) {
+            message = "Je ne peux pas semer.";
+            return false;
+        }
+        board.set(position, Tile::SmallRock);
+        return true;
+    }
+
     bool ouvre() {
         if ( regarde() != Tile::Exit ) {
             message = "Je ne peux pas ouvrir.";
@@ -568,6 +579,12 @@ class LabyBaseApp {
     auto pose() {
         auto value = player.get_value();
         auto res = value.pose();
+        player.set_value(value);
+        return res;
+    }
+    auto sow() {
+        auto value = player.get_value();
+        auto res = value.sow();
         player.set_value(value);
         return res;
     }

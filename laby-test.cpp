@@ -147,6 +147,19 @@ void testLabyrinth() {
            u8"o o o o o o o\n");
 }
 
+void testSow() {
+    auto l = Labyrinth(". → w . ");
+    ASSERT( l.sow() );
+    l.avance();
+    ASSERTEQ( l.to_string(), u8". ŕ → .\n" );
+    ASSERT( not l.sow() );
+
+    l = Labyrinth("→ x");
+    ASSERT( l.ouvre() );
+    ASSERTEQ( l.to_string(), u8". →\n" );
+    ASSERT( not l.sow() );
+}
+
 void testSize() {
     auto l = Labyrinth("");
     ASSERTEQ( l.size(), Dimension(0, 0) );
@@ -383,6 +396,7 @@ int main() {
     testFilename();
     testViewAt();
     testLabyrinth();
+    testSow();
     testLabyrinthValueSemantic();
     testLabyApp();
     testLoad();
