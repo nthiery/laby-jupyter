@@ -1,15 +1,17 @@
-all: test
+PREFIX=$(CONDA_PREFIX)
 
 #CXX=clang++
 CXX=g++
-CXXFLAGS= -g -Wall -Wno-sign-compare -Wno-unused-value -std=c++17 -I /opt/miniconda3/envs/info-111/include/
+CXXFLAGS= -g -Wall -Wno-sign-compare -Wno-unused-value -std=c++17 -I include -I $(PREFIX)/include
 LDFLAGS=-lpthread
 
-timer-test: timer-test.cpp timer.hpp
+all: test
 
-laby-test: laby-test.cpp laby.hpp
+timer-test: timer-test.cpp include/laby/timer.hpp
 
-laby-widget-test: laby-widget-test.cpp laby-widget.hpp laby.hpp
+laby-test: laby-test.cpp include/laby/laby.hpp
+
+laby-widget-test: laby-widget-test.cpp include/laby/laby-widget.hpp include/laby/laby.hpp
 
 %: %.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS)

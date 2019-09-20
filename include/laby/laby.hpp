@@ -10,9 +10,9 @@
 #include "timer.hpp"
 
 const std::string LABY_FILE = __FILE__;
-const std::string LABY_BASENAME = "laby.hpp";
-const std::string LABY_BASEDIR = LABY_FILE.substr(0, LABY_FILE.length()- LABY_BASENAME.length());
-const std::string LABY_DATADIR = LABY_BASEDIR+"data";
+const std::string LABY_BASENAME = "include/laby/laby.hpp";
+const std::string LABY_PREFIX   = LABY_FILE.substr(0, LABY_FILE.length()- LABY_BASENAME.length());
+const std::string LABY_SHAREDIR  = LABY_PREFIX+"share/laby";
 
 
 std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
@@ -107,7 +107,7 @@ Tile char_to_tile(std::string c) {
 }
 
 std::string filename(Tile tile) {
-    return LABY_DATADIR+"/tiles/"+tilenames[tile]+".svg";
+    return "/nbextensions/laby/"+tilenames[tile]+".svg";
 }
 
 class Board : public std::vector<std::vector<Tile>> {
@@ -154,7 +154,7 @@ class Labyrinth {
     static
     Labyrinth load_level(std::string level) {
         // TODO: Should use the analogue of os.path
-        return load(LABY_DATADIR+"/levels/"+level+".laby");
+        return load(LABY_SHAREDIR+"/"+level+".laby");
     }
 
     static

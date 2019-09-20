@@ -16,9 +16,32 @@ Here is some [context and motivation](https://github.com/sgimenez/laby/issues/52
 Credits for all the artwork and puzzles goes to the original Laby
 authors! Thank you for making this possible by sharing your work !!!
 
-This alpha version:
+This an alpha version:
 - supports only the C++ programming language
 - supports only the French language
 - is likely to have bugs or missing features
 
 Please [try it out online](https://mybinder.org/v2/gh/nthiery/laby-jupyter/master?filepath=notebooks) and report bugs!
+
+## Installation
+
+Install the [dependencies](environment.yml), typically with conda.
+Then:
+
+    git clone git@github.com:nthiery/laby-jupyter.git
+    pip install .
+
+After this step, you should be able to enjoy all the [notebooks](notebooks/).
+
+The installation procedure is primitive and assumes a standard
+environment with <PREFIX>/include, <PREFIX>/share and jupyter
+installed in <PREFIX>/share/jupyter/.
+
+## Tests
+
+Run:
+
+    make tests
+
+Again, this is primitive, assuming g++ and xwidgets and stuff directly
+in the standard include path, or $(CONDA_PREFIX)/include.
