@@ -85,13 +85,13 @@ using Dimension = Position;
 enum class Direction { North, West, South, East };
 std::vector<Position> directions = { {-1,0}, {0,-1}, {1,0}, {0,1} };
 
-// Assumption: fake tiles that can't be displayed are at the end, after "outside"
 enum Tile {
     AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb
 };
 
+// Assumption: fake tiles are rendered as void
 std::vector<std::string> tilenames = {
-    "ant-e", "ant-n", "ant-s", "ant-w", "exit", "nrock", "nweb", "rock", "void", "wall", "web", "outside", "random_rock", "random_web"
+    "ant-e", "ant-n", "ant-s", "ant-w", "exit", "nrock", "nweb", "rock", "void", "wall", "web", "void", "void", "void"
 };
 std::vector<std::string> tilechars = {
     u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W"
@@ -126,10 +126,8 @@ std::string filename(Tile tile) {
 std::string svg_image(Tile tile) {
     if ( use_inline_svg ) {
         if ( svg_images.size() == 0 )
-            for ( auto tilename: tilenames ) {
-                if ( tilename == "outside" ) break;
+            for ( auto tilename: tilenames )
                 svg_images.push_back(read_file(LABY_TILEDIR + tilename + ".svg"));
-            }
         return svg_images[tile];
     }
     return "<img src='"+filename(tile)+"' width=32 height=32>";

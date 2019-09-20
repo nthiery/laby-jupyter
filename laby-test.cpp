@@ -301,8 +301,10 @@ void testLoad() {
            u8"o . . . . o\n"
            u8"o . ↑ . r o\n"
            u8"o o o o o o\n");
-    auto l2 = Labyrinth::load_level("0");
-    ASSERTEQ(l.to_string(), l2.to_string());
+    auto l0 = Labyrinth::load_level("0");
+    ASSERTEQ(l.to_string(), l0.to_string());
+    auto l3a = Labyrinth::load_level("3a");
+    l3a.html(); // Checks that html rendering of non-tiles does not break
 }
 
 void testHtml() {
