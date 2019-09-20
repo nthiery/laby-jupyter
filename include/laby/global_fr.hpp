@@ -5,7 +5,7 @@
 #define ASSERT(C) if ( !(C) ) { throw std::runtime_error("\x1b[48;5;224mTest failed: "#C); }
 #endif
 
-#include "laby-widget.hpp"
+#include "widget.hpp"
 
 LabySVGViewPlayerApp *app;
 auto Caillou     = Tile::Rock;

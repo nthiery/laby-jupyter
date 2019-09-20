@@ -1,4 +1,4 @@
-#include "laby.hpp"
+#include "laby/laby.hpp"
 using namespace std;
 
 #define ASSERT(test) if (!(test)) cout << "Test failed in file " << __FILE__ << " line " << __LINE__ << ": " #test << endl
@@ -12,7 +12,7 @@ const string s =
         u8"o o o o o o o\n";
 
 void testFilename() {
-    ASSERTEQ("data/tiles/wall.svg", filename(Tile::Wall));
+    ASSERTEQ(filename(Tile::Wall), "/nbextensions/laby/wall.svg");
 }
 
 void testLabyrinth() {
@@ -137,15 +137,14 @@ void testLabyrinth() {
            u8"o . . . . . o\n"
            u8"o . . . . . o\n"
            u8"o o o o o o o\n");
+    ASSERT( l.won() );
     ASSERT( not l.avance() );
-    ASSERT( not l.won() );
     ASSERTEQ( l.to_string(),
            u8"o o o o o ↑ o\n"
            u8"o . . . . . o\n"
            u8"o . . . . . o\n"
            u8"o . . . . . o\n"
            u8"o o o o o o o\n");
-    ASSERT( l.won() );
 }
 
 void testSize() {
@@ -277,7 +276,7 @@ void testLabyApp() {
 }
 
 void testLoad() {
-    auto l = Labyrinth::load(LABY_DATADIR + "/levels/0.laby");
+    auto l = Labyrinth::load(LABY_SHAREDIR + "/0.laby");
     ASSERTEQ(l.to_string(),
            u8"o o o o o o\n"
            u8"o w . . . x\n"
@@ -294,49 +293,49 @@ void testHtml() {
     l.pose();
     ASSERTEQ(l.html(), R"html(<table>
     <tr>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/exit.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/exit.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
     </tr>
     <tr>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
     </tr>
     <tr>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
     </tr>
     <tr>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/ant-n.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/void.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/ant-n.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/void.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
     </tr>
     <tr>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
-        <td><img src='data/tiles/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
+        <td><img src='/nbextensions/laby/wall.svg'></td>
     </tr>
 </table>
 <pre>Je ne peux pas poser.</pre>
@@ -360,8 +359,8 @@ void testRun() {
 
 void testBaseDir() {
     // This test assumes the test are run in the source directory
-    ASSERTEQ(LABY_BASEDIR, "");
-    ASSERTEQ(LABY_DATADIR, "data");
+    ASSERTEQ(LABY_PREFIX, "");
+    ASSERTEQ(LABY_SHAREDIR, "share/laby");
     // std::cout << "base directory: " << __basedir__ << std::endl;
     // std::cout << "data directory: " << __datadir__ << std::endl;
 }

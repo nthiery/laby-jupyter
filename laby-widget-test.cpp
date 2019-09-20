@@ -1,4 +1,4 @@
-#include "laby-widget.hpp"
+#include "laby/laby-widget.hpp"
 using namespace std;
 
 //#define ASSERT(test) if (!(test)) cout << "Test failed in file " << __FILE__ << " line " << __LINE__ << ": " #test << endl

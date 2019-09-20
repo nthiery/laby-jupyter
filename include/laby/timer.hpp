@@ -1,3 +1,6 @@
+#ifndef LABY_TIMER_H
+#define LABY_TIMER_H
+
 #include <thread>
 #include <functional>
 #include <mutex>
@@ -78,3 +81,5 @@ class Timer
         }
     }
 };
+
+#endif
