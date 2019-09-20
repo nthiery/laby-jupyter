@@ -8,3 +8,6 @@ dependencies:
 - notebook
 - xeus-cling
 - xwidgets
+- pip
+- pip:
+     - .
