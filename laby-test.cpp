@@ -311,7 +311,7 @@ void testHtml() {
     Labyrinth l(s);
     l.pose();
     use_inline_svg = false;
-    ASSERTEQ(l.html(), R"html(<table>
+    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
     <tr>
         <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
         <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>

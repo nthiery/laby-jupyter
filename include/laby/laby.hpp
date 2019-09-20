@@ -238,7 +238,7 @@ class Labyrinth {
     }
 
     std::string html() {
-        std::string s = "<table>\n";
+        std::string s = "<table style='line-height: 0pt;'>\n";
         for ( auto line: view() ) {
             s += "    <tr>\n";
             for (int j=0; j<line.size(); j++ ) {
