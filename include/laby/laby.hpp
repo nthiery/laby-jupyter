@@ -18,6 +18,8 @@ const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels/";
 bool use_inline_svg=true;
 std::vector<std::string> svg_images;
 
+bool moonwalk=true;
+
 std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
 {
     if (leng==0) { return ""; }
@@ -86,18 +88,17 @@ enum class Direction { North, West, South, East };
 std::vector<Position> directions = { {-1,0}, {0,-1}, {1,0}, {0,1} };
 
 enum Tile {
-    AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb
+    AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb,
+    FooN,FootS,FootE,FootW
 };
 
 // Assumption: fake tiles are rendered as void
 std::vector<std::string> tilenames = {
     "ant-e", "ant-n", "ant-s", "ant-w", "exit", "nrock", "nweb", "rock", "void", "wall", "web", "void", "void", "void"
-    /**Ce que ROBEYNS veut rajouter
-    "foot-n","foot-s","foot-e","foot-w"
-    **/
+    ,"foot-n","foot-s","foot-e","foot-w"
 };
 std::vector<std::string> tilechars = {
-    u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W"
+    u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W","N","S","E","W"
     
 };
 
@@ -216,6 +217,9 @@ class Labyrinth {
                 for (unsigned int dir = 0; dir < 4; dir ++) {
                     if ( tile == ant_tiles[dir] ) {
                         position = { i, j };
+                        
+                        sow_steps();
+                        
                         direction = Direction(dir);
                         tile = Tile::Void;
                         break;
@@ -373,6 +377,23 @@ class Labyrinth {
         position = devant();
         return true;
     }
+    
+    bool avanceFeet() {
+        Tile tile = board.get(position);
+        Tile tile_devant = board.get(devant());
+        if ( tile == Tile::Web or
+             tile == Tile::Exit or
+             tile_devant == Tile::Outside or
+             tile_devant == Tile::Rock or
+             tile_devant == Tile::Exit or
+             tile_devant == Tile::Wall) {
+            message = "Je ne peux pas avancer.";
+            return false;
+        }
+        message = "";
+        position = devant();
+        return true;
+    }
 
     Tile regarde() {
         Tile tile = board.get(devant());
@@ -414,6 +435,26 @@ class Labyrinth {
             return false;
         }
         board.set(position, Tile::SmallRock);
+        return true;
+    }
+    
+    bool sow_steps(){
+        switch(direction) {
+            case Direction::North: return sow(Tile::FootN);  break;
+            case Direction::East:  return sow(Tile::FootE); break;
+            case Direction::South: return sow(Tile::FootS);  break;
+            case Direction::West:  return sow(Tile::FootW); break;
+            default return false;
+        }  
+    }
+    
+    bool sow(Tile feet){
+        Tile tile = board.get(position);
+        if ( tile == Tile::Exit ) {
+            message = "";
+            return false;
+        }
+        board.set(position, feet);
         return true;
     }
 
