@@ -92,9 +92,13 @@ enum Tile {
 // Assumption: fake tiles are rendered as void
 std::vector<std::string> tilenames = {
     "ant-e", "ant-n", "ant-s", "ant-w", "exit", "nrock", "nweb", "rock", "void", "wall", "web", "void", "void", "void"
+    /**Ce que ROBEYNS veut rajouter
+    "foot-n","foot-s","foot-e","foot-w"
+    **/
 };
 std::vector<std::string> tilechars = {
     u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W"
+    
 };
 
 enum PlayDirection { Forward, Backward, None };
@@ -325,6 +329,9 @@ class Labyrinth {
 
     Position devant() {
         Position diff = directions[int(direction)];
+        /**Ce que ROBEYNS veut rajouter
+        svg_image(Tile::Feet)
+        **/
         return Position({position.i+diff.i, position.j+diff.j});
     }
 
