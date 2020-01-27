@@ -439,13 +439,15 @@ class Labyrinth {
     }
     
     bool sow_steps(){
-        switch(direction) {
-            case Direction::North: return sow(Tile::FootN);  break;
-            case Direction::East:  return sow(Tile::FootE); break;
-            case Direction::South: return sow(Tile::FootS);  break;
-            case Direction::West:  return sow(Tile::FootW); break;
-            default return false;
-        }  
+        if(moonwalk){
+            switch(direction) {
+                case Direction::North: return sow(Tile::FootN);  break;
+                case Direction::East:  return sow(Tile::FootE); break;
+                case Direction::South: return sow(Tile::FootS);  break;
+                case Direction::West:  return sow(Tile::FootW); break;
+                default return false;
+            }
+        }
     }
     
     bool sow(Tile feet){
