@@ -156,12 +156,23 @@ void testLabyrinth() {
 
 void testStack(){
     // Rendre le labyrinth minimal.
-    const string stack_test= u8" . → r .";
+    const string stack_test= u8"o . → r . x";
     
     auto l_stack = Labyrinth(stack_test);
     ASSERTEQ( l_stack.to_string(),
-        u8" . → .");
-    //ASSERT();
+        u8"o . → r . x");
+    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
+    <tr>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/ant-e.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/rock.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
+    </tr>
+</table>
+<pre> </pre>
+)html");
     
     // Tester les 3 fonctions utilisé dans laby.hpp
     
