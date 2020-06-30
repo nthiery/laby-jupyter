@@ -7,6 +7,8 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <ctype.h>
+#include <algorithm>    // std::find
 #include "timer.hpp"
 
 const std::string LABY_FILE = __FILE__;
@@ -14,9 +16,11 @@ const std::string LABY_BASENAME = "include/laby/laby.hpp";
 const std::string LABY_PREFIX   = LABY_FILE.substr(0, LABY_FILE.length()- LABY_BASENAME.length());
 const std::string LABY_SHAREDIR = LABY_PREFIX+"share/laby/";
 const std::string LABY_TILEDIR  = LABY_SHAREDIR+"tiles/";
-const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels/";
+const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels";
 bool use_inline_svg=true;
 std::vector<std::string> svg_images;
+
+bool moonwalk=true;
 
 std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
 {
@@ -86,15 +90,18 @@ enum class Direction { North, West, South, East };
 std::vector<Position> directions = { {-1,0}, {0,-1}, {1,0}, {0,1} };
 
 enum Tile {
-    AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb
+    AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb,
+    FootN,FootS,FootE,FootW
 };
 
 // Assumption: fake tiles are rendered as void
 std::vector<std::string> tilenames = {
     "ant-e", "ant-n", "ant-s", "ant-w", "exit", "nrock", "nweb", "rock", "void", "wall", "web", "void", "void", "void"
+    ,"foot-n","foot-s","foot-e","foot-w"
 };
 std::vector<std::string> tilechars = {
-    u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W"
+    u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W","N","S","E","W"
+    
 };
 
 enum PlayDirection { Forward, Backward, None };
@@ -159,12 +166,12 @@ class Board : public std::vector<std::vector<Tile>> {
 class Labyrinth {
     Board board;
     Position position;
-    Direction direction = Direction::North;
+    //Direction direction = Direction::North;
     Tile carry = Void;
     std::string message;
     bool _won = false;
     public:
-
+    Direction direction = Direction::North;
     //////////////////////////////////////////////////////////////////////////
     // Constructors
     Labyrinth() {
@@ -235,14 +242,85 @@ class Labyrinth {
             s += "\n";
         }
         return s;
-    }
+    }    
 
-    std::string html() {
+    std::vector<Tile> tiles_at_position(Position position) {
+        std::vector<Tile> res = {};        
+        if( position.i < board.size() and
+            position.j < board[position.i].size()) {            
+            // Quel tuile je vais afficher et dans quel ordre, c'est ici!!                        
+           
+            //res[0] est la tuile de fond
+            res.push_back(board.get(position));        
+            
+            //res[1] est pour la fourmi
+            std::vector<Tile>::iterator  direction_2 = std::find(ant_tiles.begin(), ant_tiles.end() ,board.get(position));              
+            if( direction_2 != ant_tiles.end()){                
+                res.push_back(ant_tiles[*direction_2]);
+                
+                //res[2] est pour le cailloux tenu par la fourmi.
+                if(carry == Tile::Rock){
+                    res.push_back(Tile::Rock);
+                }
+            }            
+        }        
+        return res;
+    }
+    
+    std::string tiles_to_html(std::vector<Tile> tiles)  {       
+        std::string s = "";
+        
+        s += "<style> .stack { position: absolute;  } </style>";        
+        s += " <td>";
+        for(int i=tiles.size()-1; i>=0; i--) {
+                    
+            if(i == 2){    
+                s += "<div style='position: relative; left: 5px; top: 5px;'> <img id='rock_carry' src='"+ filename(tiles[i]) +"' width=20 height=20 class='stack' > </div>" ;                
+            }
+            if(i == 1){
+                //s += " <div style='position: relative'> <img id='ant' src='"+ filename(tiles[i]) +"' > </div> " ;   /*svg_image(tiles[i])*/
+            }
+            if(i == 0 && tiles[i]!=Tile::Void){
+                s += "   " + svg_image(tiles[i]) + " " ;
+            }
+        }
+        s += " </td>\n";
+        return s;
+    }
+    
+    std::string html(){
+        board[position.i][position.j] = ant_tiles[int(direction)];       
         std::string s = "<table style='line-height: 0pt;'>\n";
+        for(int i = 0 ; i < board.size() ; i++) {
+            s += "    <tr>\n";
+            for(int j = 0 ; j < board[i].size() ; j++) {                                
+                s += tiles_to_html(tiles_at_position(Position(i,j)));
+            }
+            s += "    </tr>\n";
+        }
+        s+="</table>\n";
+        s+="<pre>";
+        if ( message.empty() )
+            s += " ";
+        s += message;
+        s += "</pre>\n";
+        return s;
+    }
+    
+    /**
+    std::string html() {
+        std::string s = "<table style='line-height: 0pt;'>\n";                
         for ( auto line: view() ) {
             s += "    <tr>\n";
             for (int j=0; j<line.size(); j++ ) {
-                s += "        <td>"+svg_image(line[j])+"</td>\n";
+                if( carry == Tile::Rock && (line[j]==Tile::AntE || line[j]==Tile::AntN || line[j]==Tile::AntS || line[j]==Tile::AntW) ){
+                    s += "<style> .stack { position: absolute;  } </style>";
+                    s += " <td> <div style='position: relative; left: 5px; top: 5px;'> <img id='rock_carry' src='tiles/rock.svg' width=20 height=20 class='stack' > </div>" ;
+                    s += "        "+svg_image(line[j])+"</td>\n";
+                }
+                else{
+                    s += "        <td>"+svg_image(line[j])+"</td>\n";
+                }
             }
             s += "    </tr>\n";
         }
@@ -255,7 +333,8 @@ class Labyrinth {
         s += message;
         s += "</pre>\n";
         return s;
-    }
+    }       
+    */
 
     Board view() {
         Board view = board;
@@ -372,10 +451,17 @@ class Labyrinth {
         message = "";
         return tile;
     }
+    
+    Direction direct(){
+        Direction result=Direction(direction);
+        message="";
+        return result;
+    }
 
     bool prend() {
         if ( carry == Tile::Void and regarde() == Tile::Rock ) {
             carry = Tile::Rock;
+            //board.set(position, Tile::Carry)
             board.set(devant(), Tile::Void);
             message = "";
             return true;
@@ -389,7 +475,11 @@ class Labyrinth {
              (regarde() == Tile::Void or
               regarde() == Tile::Web or
               regarde() == Tile::SmallWeb or
-              regarde() == Tile::SmallRock)) {
+              regarde() == Tile::SmallRock or
+              regarde() == Tile::FootN or
+              regarde() == Tile::FootE or
+              regarde() == Tile::FootS or
+              regarde() == Tile::FootW )) {
             carry = Tile::Void;
             board.set(devant(), Tile::Rock);
             message = "";
@@ -398,7 +488,32 @@ class Labyrinth {
         message = "Je ne peux pas poser.";
         return false;
     }
-
+    
+    bool sow_steps(){
+        if(moonwalk){
+            switch(direction) {
+                case Direction::North: return sow(Tile::FootN);  break;
+                case Direction::East:  return sow(Tile::FootE); break;
+                case Direction::South: return sow(Tile::FootS);  break;
+                case Direction::West:  return sow(Tile::FootW); break;
+                default : return false;
+            }
+        }
+        else{return sow(Tile::Void);}
+        return true;
+    }
+    
+    bool sow(Tile feet){
+        Tile tile = board.get(position);
+        if ( tile == Tile::Exit ) {
+            message = "";
+            return false;
+        }
+        board.set(position, feet);
+        return true;
+    }
+    
+    
     bool sow() {
         Tile tile = board.get(position);
         if ( tile == Tile::Web or
@@ -448,6 +563,7 @@ class Player {
     LabyrinthView &view;
     public: // for debuging
     Labyrinth original_value;
+    Labyrinth present_value;
     std::vector<Labyrinth> history;
     int time;
 
@@ -469,6 +585,7 @@ class Player {
     Player(LabyrinthView &_view):
         view(_view),
         original_value(view.value),
+        present_value(view.value),
         play_direction(PlayDirection::Forward),
         play_fps(1),
         timer(std::bind(&Player::tick, this), play_fps) {
@@ -491,7 +608,7 @@ class Player {
 
     void set_value(Labyrinth value) {
         if ( history.size() > 10000 )
-            throw std::runtime_error("Votre programme a pris plus de 1000 étapes");
+            throw std::runtime_error("Votre programme a pris plus de 10000 étapes");
         history.push_back(value);
         if (not timer.running() and time == history.size() - 2 ) {
             time++;
@@ -522,6 +639,20 @@ class Player {
     void end() {
         time = history.size() - 1;
         update();
+    }
+    
+    void hide_step() {
+        present_value = view.value;
+        if(moonwalk){moonwalk=false;}
+                else{moonwalk=true;}
+        auto randomized = present_value;
+        randomized.randomize();
+        history[time] = randomized;
+        //svg_image[]=
+        update();
+        std::cout << moonwalk << std::endl;
+        play_direction = PlayDirection::Forward;
+        timer.set_fps(play_fps);
     }
 
     void step_backward() {
@@ -611,6 +742,18 @@ class LabyBaseApp {
         player.set_value(value);
         return res;
     }
+    
+    auto sow_steps(){
+        auto value = player.get_value();
+        auto res = value.sow_steps();
+        player.set_value(value);
+        return res;
+    }
+    
+    auto direct() {
+        return player.get_value().direct();
+    }
+    
     auto regarde() {
         return player.get_value().regarde();
     }

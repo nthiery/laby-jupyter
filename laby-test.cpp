@@ -9,7 +9,7 @@ const string s =
         u8"o . . . . . o\n"
         u8"o . . . . . o\n"
         u8"o . ↑ . . . o\n"
-        u8"o o o o o o o\n";
+        u8"o o o o o o o\n";   
 
 void testSvgImage() {
     svg_image(Tile::Exit);
@@ -149,6 +149,22 @@ void testLabyrinth() {
            u8"o . . . . . o\n"
            u8"o . . . . . o\n"
            u8"o o o o o o o\n");
+
+}
+
+ 
+
+void testStack(){
+    // Rendre le labyrinth minimal.
+    const string stack_test= u8" . → r .";
+    
+    auto l_stack = Labyrinth(stack_test);
+    ASSERTEQ( l_stack.to_string(),
+        u8" . → .");
+    //ASSERT();
+    
+    // Tester les 3 fonctions utilisé dans laby.hpp
+    
 }
 
 void testSow() {

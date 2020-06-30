@@ -1,13 +1,19 @@
-# Software dependencies
+# Logiciels requis pour utiliser et travailler sur les documents du cours Info 111
+#- "gitlab+https://gitlab.u-psud.fr/ter-graphupsud/labycpp_python/tree/master/ter-jupyter/Seance1"
 name: laby-jupyter
 
 channels:
 - conda-forge
 
 dependencies:
-- notebook
 - xeus-cling
+- notebook
 - xwidgets
+- ipywidgets
+- rise
+- bqplot
 - pip
+- jupyter_contrib_nbextensions
 - pip:
-     - .
+    - nbdime
+#    - .
