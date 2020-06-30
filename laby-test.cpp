@@ -173,9 +173,117 @@ void testStack(){
 </table>
 <pre> </pre>
 )html");
-    
-    // Tester les 3 fonctions utilisé dans laby.hpp
-    
+    ASSERT(not l.avance());
+    ASSERT( l.prend());
+    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
+    <tr>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><div style='position: relative; left: 5px; top: 5px;'> <img id='rock_carry' src='rock.svg' width=20 height=20 class='stack' > </div>
+            <img src='/nbextensions/laby/ant-e.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
+    </tr>
+</table>
+<pre></pre>
+)html");
+    ASSERT( l.avance());
+    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
+    <tr>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><div style='position: relative; left: 5px; top: 5px;'> <img id='rock_carry' src='rock.svg' width=20 height=20 class='stack' > </div>
+            <img src='/nbextensions/laby/ant-e.svg' width=32 height=32></td>        
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
+    </tr>
+</table>
+<pre></pre>
+)html");
+    ASSERT( l.avance());
+    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
+    <tr>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><div style='position: relative; left: 5px; top: 5px;'> <img id='rock_carry' src='rock.svg' width=20 height=20 class='stack' > </div>
+            <img src='/nbextensions/laby/ant-e.svg' width=32 height=32></td>                
+        <td><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
+    </tr>
+</table>
+<pre></pre>
+)html");
+    ASSERT( l.gauche());
+    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
+    <tr>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><div style='position: relative; left: 5px; top: 5px;'> <img id='rock_carry' src='rock.svg' width=20 height=20 class='stack' > </div>
+            <img src='/nbextensions/laby/ant-e.svg' width=32 height=32></td>                
+        <td><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
+    </tr>
+</table>
+<pre></pre>
+)html");
+    ASSERT( l.gauche());
+    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
+    <tr>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><div style='position: relative; left: 5px; top: 5px;'> <img id='rock_carry' src='rock.svg' width=20 height=20 class='stack' > </div>
+            <img src='/nbextensions/laby/ant-e.svg' width=32 height=32></td>                
+        <td><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
+    </tr>
+</table>
+<pre></pre>
+)html");
+    ASSERT( l.pose());
+    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
+    <tr>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/rock.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/ant-e.svg' width=32 height=32></td>                
+        <td><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
+    </tr>
+</table>
+<pre></pre>
+)html");
+    ASSERT( l.gauche());
+    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
+    <tr>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/rock.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/ant-e.svg' width=32 height=32></td>                
+        <td><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
+    </tr>
+</table>
+<pre></pre>
+)html");
+    ASSERT( l.gauche());
+    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
+    <tr>
+        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/rock.svg' width=32 height=32></td>
+        <td><img src='/nbextensions/laby/ant-e.svg' width=32 height=32></td>                
+        <td><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
+    </tr>
+</table>
+<pre></pre>
+)html");
+    ASSERT( l.ouvre());    
 }
 
 void testSow() {
@@ -431,6 +539,7 @@ int main() {
     testFilename();
     testViewAt();
     testLabyrinth();
+    testStack();
     testSow();
     testLabyrinthValueSemantic();
     testLabyApp();
