@@ -275,7 +275,7 @@ class Labyrinth {
         for(int i=tiles.size()-1; i>=0; i--) {
                     
             if(i == 2){    
-                s += "<div style='position: relative; left: 5px; top: 5px;'> <img id='rock_carry' src='"+ filename(tiles[i]) +"' width=20 height=20 class='stack' > </div>" ;                
+                s += "<div style='position: relative; left: 5px; top: 5px;'> <img src='"+filename(tile)+"' width=20 height=20 class='stack' > </div>" ;                
             }
             if(i == 1){
                 //s += " <div style='position: relative'> <img id='ant' src='"+ filename(tiles[i]) +"' > </div> " ;   /*svg_image(tiles[i])*/
