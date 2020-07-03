@@ -244,83 +244,12 @@ class Labyrinth {
         return s;
     }    
 
-    std::vector<Tile> tiles_at_position(Position position) {
-        std::vector<Tile> res = {};        
-        if( position.i < board.size() and
-            position.j < board[position.i].size()) {            
-            // Quel tuile je vais afficher et dans quel ordre, c'est ici!!                        
-           
-            //res[0] est la tuile de fond
-            res.push_back(board.get(position));        
-            
-            //res[1] est pour la fourmi
-            std::vector<Tile>::iterator  direction_2 = std::find(ant_tiles.begin(), ant_tiles.end() ,board.get(position));              
-            if( direction_2 != ant_tiles.end()){                
-                res.push_back(ant_tiles[*direction_2]);
-                
-                //res[2] est pour le cailloux tenu par la fourmi.
-                if(carry == Tile::Rock){
-                    res.push_back(Tile::Rock);
-                }
-            }            
-        }        
-        return res;
-    }
-    
-    std::string tiles_to_html(std::vector<Tile> tiles)  {       
-        std::string s = "";
-        
-        s += "<style> .stack { position: absolute;  } </style>";        
-        s += " <td>";
-        for(int i=tiles.size()-1; i>=0; i--) {
-                    
-            if(i == 2){    
-                s += "<div style='position: relative; left: 5px; top: 5px;'> <img src='"+filename(tile)+"' width=20 height=20 class='stack' > </div>" ;                
-            }
-            if(i == 1){
-                //s += " <div style='position: relative'> <img id='ant' src='"+ filename(tiles[i]) +"' > </div> " ;   /*svg_image(tiles[i])*/
-            }
-            if(i == 0 && tiles[i]!=Tile::Void){
-                s += "   " + svg_image(tiles[i]) + " " ;
-            }
-        }
-        s += " </td>\n";
-        return s;
-    }
-    
-    std::string html(){
-        board[position.i][position.j] = ant_tiles[int(direction)];       
-        std::string s = "<table style='line-height: 0pt;'>\n";
-        for(int i = 0 ; i < board.size() ; i++) {
-            s += "    <tr>\n";
-            for(int j = 0 ; j < board[i].size() ; j++) {                                
-                s += tiles_to_html(tiles_at_position(Position(i,j)));
-            }
-            s += "    </tr>\n";
-        }
-        s+="</table>\n";
-        s+="<pre>";
-        if ( message.empty() )
-            s += " ";
-        s += message;
-        s += "</pre>\n";
-        return s;
-    }
-    
-    /**
     std::string html() {
         std::string s = "<table style='line-height: 0pt;'>\n";                
         for ( auto line: view() ) {
             s += "    <tr>\n";
             for (int j=0; j<line.size(); j++ ) {
-                if( carry == Tile::Rock && (line[j]==Tile::AntE || line[j]==Tile::AntN || line[j]==Tile::AntS || line[j]==Tile::AntW) ){
-                    s += "<style> .stack { position: absolute;  } </style>";
-                    s += " <td> <div style='position: relative; left: 5px; top: 5px;'> <img id='rock_carry' src='tiles/rock.svg' width=20 height=20 class='stack' > </div>" ;
-                    s += "        "+svg_image(line[j])+"</td>\n";
-                }
-                else{
-                    s += "        <td>"+svg_image(line[j])+"</td>\n";
-                }
+            	s += "        <td>"+svg_image(line[j])+"</td>\n";
             }
             s += "    </tr>\n";
         }
@@ -333,8 +262,7 @@ class Labyrinth {
         s += message;
         s += "</pre>\n";
         return s;
-    }       
-    */
+    }
 
     Board view() {
         Board view = board;
