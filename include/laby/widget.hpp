@@ -138,12 +138,6 @@ class PlayerView {
         auto step_label = xw::label();
         step_label.value = "Trace: ";
         */
-        auto step_box = button_template;
-        step_box.tooltip = "Hide Step";
-        step_box.icon = "box";
-        step_box.on_click([&player]() { player.hide_step(); });
-        widget.add(std::move(step_box));
-        //step_box.
          
         
 

@@ -20,10 +20,9 @@ int setrock=1;
 void BackTracking(bool rck, bool wallL);
 
 /**Show steps on the board and forward. 
-   (NB: if we unactivate the steps widget, they still showed but only void case xD).
+   (NB: if we unactivate the steps widget, they still showed but only void case).
 */
 void Step(){
-    trace();
     avance();
 }
 
@@ -63,10 +62,9 @@ void EndLaby(){
         pose();
         contient=false;
         SetRock(setrock,true);
-        trace();
         ouvre();
     }
-    else{trace();ouvre();}
+    else{ouvre();}
 }
 
 //Keep position of a rock.
@@ -162,7 +160,19 @@ bool WallRight(bool rck, bool wall_left){
         case Tile::Void : return true; break;
             
         case Tile::Wall : if(wall_left){droite();}
-                          else{gauche();} 
+                          else{
+                                  gauche();
+                                  if(regarde()==Tile::Web){
+                                      BreakNet(); 
+                                      if(wall_left){
+                                          if(rck==false){
+                                              cptrock--;
+                                              if(cptrock==0){rockbf=false; break;} 
+                                              Gauche2(); return false; break;
+                                          }
+                                      }
+                                  }
+                              } 
                           return true; break;
             
         case Tile::SmallRock : return true; break;

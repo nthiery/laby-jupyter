@@ -20,8 +20,6 @@ const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels";
 bool use_inline_svg=true;
 std::vector<std::string> svg_images;
 
-bool moonwalk=true;
-
 std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
 {
     if (leng==0) { return ""; }
@@ -97,7 +95,6 @@ enum Tile {
 // Assumption: fake tiles are rendered as void
 std::vector<std::string> tilenames = {
     "ant-e", "ant-n", "ant-s", "ant-w", "exit", "nrock", "nweb", "rock", "void", "wall", "web", "void", "void", "void"
-    ,"foot-n","foot-s","foot-e","foot-w"
 };
 std::vector<std::string> tilechars = {
     u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W","N","S","E","W"
@@ -132,10 +129,13 @@ std::string filename(Tile tile) {
 
 std::string svg_image(Tile tile) {
     if ( use_inline_svg ) {
-        if ( svg_images.size() == 0 )
-            for ( auto tilename: tilenames )
-                svg_images.push_back(read_file(LABY_TILEDIR + tilename + ".svg"));
-        return svg_images[tile];
+        if ( svg_images.size() == 0 ) {
+            for ( auto tilename: tilenames ) {
+                std::string temp = read_file(LABY_TILEDIR + tilename + ".svg");
+                svg_images.push_back(temp);
+            }
+        }
+        return svg_images[tile];        
     }
     return "<img src='"+filename(tile)+"' width=32 height=32>";
 }
@@ -244,19 +244,53 @@ class Labyrinth {
         return s;
     }    
 
-    std::string html() {
-        std::string s = "<table style='line-height: 0pt;'>\n";                
-        for ( auto line: view() ) {
+    std::vector<Tile> tiles_at_position(Position p) {
+        std::vector<Tile> res = {};                              
+           
+        Tile tile = board.get(p);
+        if(tile != Tile::Void ){                
+           res.push_back(tile);        
+        }            
+        if( p == position){                
+           res.push_back(ant_tiles[int(direction)]);
+           if(carry != Tile::Void){
+                res.push_back(carry);
+           }
+        }                            
+        return res;
+    }
+    
+    std::string tiles_to_html(std::vector<Tile> tiles)  {       
+        std::string s = "";
+        std::string temp = "";        
+        for(int i=tiles.size()-1; i>=0; i--) {                    
+            if(i > 0){                
+                s = "<div style='position: relative;'> " + svg_image(tiles[i]) + " </div>" + s;
+                int index = s.find("height=");                
+                s.insert(index, " class='tile' ");
+            }
+            else{
+                s += "   " + svg_image(tiles[i]) + " " ;
+            }
+        }
+        s = "<style> .tile { position: absolute;  } </style>" + s;        
+        s = " <td>" + s;
+        s += " </td>\n";
+        return s;
+    }
+    
+    std::string html(){  
+        //board[position.i][position.j] = ant_tiles[int(direction)];
+        std::string s = "<table style='line-height: 0pt;'>\n";
+        for(int i = 0 ; i < board.size() ; i++) {
             s += "    <tr>\n";
-            for (int j=0; j<line.size(); j++ ) {
-            	s += "        <td>"+svg_image(line[j])+"</td>\n";
+            for(int j = 0 ; j < board[i].size() ; j++) {                                
+                s += tiles_to_html(tiles_at_position(Position(i,j)));
             }
             s += "    </tr>\n";
         }
         s+="</table>\n";
         s+="<pre>";
-        if ( carry == Tile::Rock )
-            s += "Je porte un rocher. ";
         if ( message.empty() )
             s += " ";
         s += message;
@@ -365,7 +399,9 @@ class Labyrinth {
              tile_devant == Tile::Outside or
              tile_devant == Tile::Rock or
              tile_devant == Tile::Exit or
-             tile_devant == Tile::Wall) {
+             tile_devant == Tile::Wall
+             //AUTRE SOLUTION FAIRE : tile_devant == Tile::Web
+           ) {
             message = "Je ne peux pas avancer.";
             return false;
         }
@@ -415,20 +451,6 @@ class Labyrinth {
         }
         message = "Je ne peux pas poser.";
         return false;
-    }
-    
-    bool sow_steps(){
-        if(moonwalk){
-            switch(direction) {
-                case Direction::North: return sow(Tile::FootN);  break;
-                case Direction::East:  return sow(Tile::FootE); break;
-                case Direction::South: return sow(Tile::FootS);  break;
-                case Direction::West:  return sow(Tile::FootW); break;
-                default : return false;
-            }
-        }
-        else{return sow(Tile::Void);}
-        return true;
     }
     
     bool sow(Tile feet){
@@ -567,20 +589,6 @@ class Player {
     void end() {
         time = history.size() - 1;
         update();
-    }
-    
-    void hide_step() {
-        present_value = view.value;
-        if(moonwalk){moonwalk=false;}
-                else{moonwalk=true;}
-        auto randomized = present_value;
-        randomized.randomize();
-        history[time] = randomized;
-        //svg_image[]=
-        update();
-        std::cout << moonwalk << std::endl;
-        play_direction = PlayDirection::Forward;
-        timer.set_fps(play_fps);
     }
 
     void step_backward() {
