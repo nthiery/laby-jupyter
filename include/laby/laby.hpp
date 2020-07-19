@@ -16,7 +16,7 @@ const std::string LABY_BASENAME = "include/laby/laby.hpp";
 const std::string LABY_PREFIX   = LABY_FILE.substr(0, LABY_FILE.length()- LABY_BASENAME.length());
 const std::string LABY_SHAREDIR = LABY_PREFIX+"share/laby/";
 const std::string LABY_TILEDIR  = LABY_SHAREDIR+"tiles/";
-const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels";
+const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels/";
 bool use_inline_svg=true;
 std::vector<std::string> svg_images;
 
@@ -248,9 +248,7 @@ class Labyrinth {
         std::vector<Tile> res = {};                              
            
         Tile tile = board.get(p);
-        if(tile != Tile::Void ){                
-           res.push_back(tile);        
-        }            
+        res.push_back(tile);                    
         if( p == position){                
            res.push_back(ant_tiles[int(direction)]);
            if(carry != Tile::Void){
@@ -270,22 +268,22 @@ class Labyrinth {
                 s.insert(index, " class='tile' ");
             }
             else{
-                s += "   " + svg_image(tiles[i]) + " " ;
+                s += svg_image(tiles[i]);
             }
         }
-        s = "<style> .tile { position: absolute;  } </style>" + s;        
         s = " <td>" + s;
-        s += " </td>\n";
+        s += "</td>\n";
         return s;
     }
     
     std::string html(){  
-        //board[position.i][position.j] = ant_tiles[int(direction)];
-        std::string s = "<table style='line-height: 0pt;'>\n";
+        //board[position.i][position.j] = ant_tiles[int(direction)];        
+        std::string s = "<style> .tile { position: absolute;  } </style>\n";
+        s += "<table style='line-height: 0pt;'>\n";
         for(int i = 0 ; i < board.size() ; i++) {
             s += "    <tr>\n";
             for(int j = 0 ; j < board[i].size() ; j++) {                                
-                s += tiles_to_html(tiles_at_position(Position(i,j)));
+                s += "       " + tiles_to_html(tiles_at_position(Position(i,j)));
             }
             s += "    </tr>\n";
         }
@@ -666,22 +664,17 @@ class LabyBaseApp {
         player.set_value(value);
         return res;
     }
+    
     auto pose() {
         auto value = player.get_value();
         auto res = value.pose();
         player.set_value(value);
         return res;
     }
+    
     auto sow() {
         auto value = player.get_value();
         auto res = value.sow();
-        player.set_value(value);
-        return res;
-    }
-    
-    auto sow_steps(){
-        auto value = player.get_value();
-        auto res = value.sow_steps();
         player.set_value(value);
         return res;
     }

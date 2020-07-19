@@ -151,37 +151,37 @@ void testLabyrinth() {
            u8"o o o o o o o\n");
 }
 
-void testTiles_at_position(){
-    const string stack_test= u8"o . → r ẃ x";    
-    
-    auto l_stack = Labyrinth(stack_test);
-    use_inline_svg = false;
-    std::vector<Tile> temp = {};
-    temp.push_back("o");
-    ASSERTEQ( l_stack.tiles_at_position(Position(0,0)) , temp );
-    ASSERT(not l_stack.avance());
-    ASSERT( l_stack.prend());
-    temp = {};
-    temp.push_back("→");
-    temp.push_back("r");
-    ASSERTEQ( l_stack.tiles_at_position(Position(0,2)) , temp );
+void testTiles_at_position(){       
+    auto l = Labyrinth(u8". o → r ẃ x");  
+    ASSERT( l.tiles_at_position(Position(0,0)) == vector<Tile>({}) );
+    ASSERT( l.tiles_at_position(Position(0,1)) == vector<Tile>({Tile::Wall}) );
+    ASSERT( l.tiles_at_position(Position(0,2)) ==  vector<Tile>({Tile::AntE}) );
+    ASSERT( l.prend());
+    ASSERT( l.tiles_at_position(Position(0,2)) == vector<Tile>({Tile::AntE,Tile::Rock}) );
     ASSERT( l.avance());
     ASSERT( l.avance());
-    temp = {};
-    temp.push_back("ẃ");
-    temp.push_back("→");
-    temp.push_back("r");
-    ASSERTEQ( l_stack.tiles_at_position(Position(0,4)) , temp );
-    
+    ASSERT( l.tiles_at_position(Position(0,4)) == vector<Tile>({Tile::SmallWeb,Tile::AntE,Tile::Rock}) );    
+    /* TODO: retourner la fourmi et poser le rocher puis utiliser la porte exit*/    
 }
 
-void testStack(){
+void testTiles_to_html(){
+    auto l = Labyrinth();
+    use_inline_svg = false;
+    vector<Tile> empty = {};
+    ASSERTEQ( l.tiles_to_html({}) , "" );
+    ASSERTEQ( l.tiles_to_html({Tile::Void}) , " <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>\n" );
+    ASSERTEQ( l.tiles_to_html({Tile::AntS}) , " <td><img src='/nbextensions/laby/ant-s.svg' width=32 height=32></td>\n" );
+    ASSERTEQ( l.tiles_to_html({Tile::Void,Tile::AntN,Tile::Rock}) , " <td><div style='position: relative;'> <img src='/nbextensions/laby/rock.svg' width=32 class='tile' height=32> </div><div style='position: relative;'> <img src='/nbextensions/laby/ant-n.svg' width=32 class='tile' height=32> </div><img src='/nbextensions/laby/void.svg' width=32 height=32></td>\n" );
+}
+
+/*
+void testHtml(){
     // Rendre le labyrinth minimal.
     const string stack_test= u8"o . → r . x";    
     
-    auto l_stack = Labyrinth(stack_test);
+    auto l = Labyrinth(stack_test);
     use_inline_svg = false;
-    ASSERTEQ( l_stack.to_string(),
+    ASSERTEQ( l.to_string(),
         u8"o . → r . x");
     ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
     <tr>
@@ -307,7 +307,7 @@ void testStack(){
 )html");
     ASSERT( l.ouvre());    
 }
-
+*/
 
 void testSow() {
     auto l = Labyrinth(". → w . ");
@@ -469,7 +469,8 @@ void testHtml() {
     Labyrinth l(s);
     l.pose();
     use_inline_svg = false;
-    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
+    ASSERTEQ(l.html(), R"html(<style> .tile { position: absolute;  } </style>
+<table style='line-height: 0pt;'>
     <tr>
         <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
         <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
@@ -500,7 +501,7 @@ void testHtml() {
     <tr>
         <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
         <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/ant-n.svg' width=32 height=32></td>
+        <td><div style='position: relative;'> <img src='/nbextensions/laby/ant-n.svg' width=32  class='tile' height=32> </div><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
         <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
         <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
         <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
