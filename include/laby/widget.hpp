@@ -132,20 +132,7 @@ class PlayerView {
 
         // auto frame = xw::label();
         // frame.value = "";
-        // widget.add(std::move(frame));
-        
-        /**
-        auto step_label = xw::label();
-        step_label.value = "Trace: ";
-        */
-        auto step_box = button_template;
-        step_box.tooltip = "Hide Step";
-        step_box.icon = "box";
-        step_box.on_click([&player]() { player.hide_step(); });
-        widget.add(std::move(step_box));
-        //step_box.
-         
-        
+        // widget.add(std::move(frame));                 
 
         auto speed_label = xw::label();
         speed_label.value = "Speed: ";

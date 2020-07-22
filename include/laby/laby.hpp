@@ -482,7 +482,6 @@ class Player {
     LabyrinthView &view;
     public: // for debuging
     Labyrinth original_value;
-    Labyrinth present_value;
     std::vector<Labyrinth> history;
     int time;
 
@@ -504,7 +503,6 @@ class Player {
     Player(LabyrinthView &_view):
         view(_view),
         original_value(view.value),
-        present_value(view.value),
         play_direction(PlayDirection::Forward),
         play_fps(1),
         timer(std::bind(&Player::tick, this), play_fps) {
@@ -562,8 +560,7 @@ class Player {
     
     void hide_step() {
         present_value = view.value;
-        if(leave_steps){leave_steps=false;}
-                else{leave_steps=true;}
+        leave_steps = not leave_steps;
         auto randomized = present_value;
         randomized.randomize();
         history[time] = randomized;
