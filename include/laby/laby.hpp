@@ -95,7 +95,6 @@ std::vector<std::string> tilenames = {
 };
 std::vector<std::string> tilechars = {
     u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W"
-    
 };
 
 enum PlayDirection { Forward, Backward, None };
