@@ -18,8 +18,6 @@ const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels/";
 bool use_inline_svg=true;
 std::vector<std::string> svg_images;
 
-
-
 std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
 {
     if (leng==0) { return ""; }
@@ -168,7 +166,7 @@ class Labyrinth {
     Tile carry = Void;
     std::string message;
     bool _won = false;
-    public:    
+    public:
     bool leave_steps=true;
     //////////////////////////////////////////////////////////////////////////
     // Constructors
@@ -377,7 +375,7 @@ class Labyrinth {
         message = "";
         return tile;
     }
-    
+
     bool prend() {
         if ( carry == Tile::Void and regarde() == Tile::Rock ) {
             carry = Tile::Rock;
@@ -391,14 +389,8 @@ class Labyrinth {
 
     bool pose() {
         if ( carry == Tile::Rock and
-             (regarde() == Tile::Void or
-              regarde() == Tile::Web or
-              regarde() == Tile::SmallWeb or
-              regarde() == Tile::SmallRock or
-              regarde() == Tile::FootN or
-              regarde() == Tile::FootE or
-              regarde() == Tile::FootS or
-              regarde() == Tile::FootW )) {
+             (regarde() != Tile::Rock or
+              regarde() != Tile::Exit) ) {
             carry = Tile::Void;
             board.set(devant(), Tile::Rock);
             message = "";
@@ -407,8 +399,24 @@ class Labyrinth {
         message = "Je ne peux pas poser.";
         return false;
     }
+        
+    bool leavesteps(){
+        if(leave_steps){
+            leave_steps = not leave_steps;
+            switch(direction) {
+                case Direction::North: return sow(Tile::FootN);  break;
+                case Direction::East:  return sow(Tile::FootE);  break;
+                case Direction::South: return sow(Tile::FootS);  break;
+                case Direction::West:  return sow(Tile::FootW);  break;
+                default : return false;
+            }
+        }
+        else{return sow(Tile::Void);}
+        return true;
+    }
     
-    bool sow_steps(){
+    bool leavesteps(bool flag){
+        leave_steps = flag;
         if(leave_steps){
             switch(direction) {
                 case Direction::North: return sow(Tile::FootN);  break;
@@ -422,26 +430,19 @@ class Labyrinth {
         return true;
     }
     
-    bool sow(Tile feet){
-        Tile tile = board.get(position);
-        if ( tile == Tile::Exit ) {
+    bool sow(Tile tile){
+        Tile position_tile = board.get(position);
+        if ( position_tile == Tile::Exit ) {
             message = "";
             return false;
         }
-        board.set(position, feet);
+        board.set(position, tile);
         return true;
     }
     
     
     bool sow() {
-        Tile tile = board.get(position);
-        if ( tile == Tile::Web or
-             tile == Tile::Exit ) {
-            message = "Je ne peux pas semer.";
-            return false;
-        }
-        board.set(position, Tile::SmallRock);
-        return true;
+        return sow(Tile::SmallRock);
     }
 
     bool ouvre() {
