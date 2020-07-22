@@ -168,6 +168,7 @@ class Labyrinth {
     std::string message;
     bool _won = false;
     public:
+    
     //////////////////////////////////////////////////////////////////////////
     // Constructors
     Labyrinth() {
@@ -276,7 +277,7 @@ class Labyrinth {
         s += "<table style='line-height: 0pt;'>\n";
         for(int i = 0 ; i < board.size() ; i++) {
             s += "    <tr>\n";
-            for(int j = 0 ; j < board[i].size() ; j++) {                                
+            for(int j = 0 ; j < board[i].size() ; j++) {
                 s += "       " + tiles_to_html(tiles_at_position(Position(i,j)));
             }
             s += "    </tr>\n";
@@ -391,9 +392,7 @@ class Labyrinth {
              tile_devant == Tile::Outside or
              tile_devant == Tile::Rock or
              tile_devant == Tile::Exit or
-             tile_devant == Tile::Wall
-             //AUTRE SOLUTION FAIRE : tile_devant == Tile::Web
-           ) {
+             tile_devant == Tile::Wall) {
             message = "Je ne peux pas avancer.";
             return false;
         }
@@ -433,7 +432,7 @@ class Labyrinth {
         message = "Je ne peux pas poser.";
         return false;
     }
-    
+
     bool sow() {
         Tile tile = board.get(position);
         if ( tile == Tile::Web or
