@@ -132,14 +132,7 @@ class PlayerView {
 
         // auto frame = xw::label();
         // frame.value = "";
-        // widget.add(std::move(frame));
-        
-        /**
-        auto step_label = xw::label();
-        step_label.value = "Trace: ";
-        */
-         
-        
+        // widget.add(std::move(frame));                 
 
         auto speed_label = xw::label();
         speed_label.value = "Speed: ";

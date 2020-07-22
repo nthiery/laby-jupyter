@@ -7,8 +7,6 @@
 #include <sstream>
 #include <vector>
 #include <string>
-#include <ctype.h>
-#include <algorithm>    // std::find
 #include "timer.hpp"
 
 const std::string LABY_FILE = __FILE__;
@@ -88,8 +86,7 @@ enum class Direction { North, West, South, East };
 std::vector<Position> directions = { {-1,0}, {0,-1}, {1,0}, {0,1} };
 
 enum Tile {
-    AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb,
-    FootN,FootS,FootE,FootW
+    AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb
 };
 
 // Assumption: fake tiles are rendered as void
@@ -97,7 +94,7 @@ std::vector<std::string> tilenames = {
     "ant-e", "ant-n", "ant-s", "ant-w", "exit", "nrock", "nweb", "rock", "void", "wall", "web", "void", "void", "void"
 };
 std::vector<std::string> tilechars = {
-    u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W","N","S","E","W"
+    u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W"
     
 };
 
@@ -166,12 +163,11 @@ class Board : public std::vector<std::vector<Tile>> {
 class Labyrinth {
     Board board;
     Position position;
-    //Direction direction = Direction::North;
+    Direction direction = Direction::North;
     Tile carry = Void;
     std::string message;
     bool _won = false;
     public:
-    Direction direction = Direction::North;
     //////////////////////////////////////////////////////////////////////////
     // Constructors
     Labyrinth() {
@@ -245,8 +241,7 @@ class Labyrinth {
     }    
 
     std::vector<Tile> tiles_at_position(Position p) {
-        std::vector<Tile> res = {};                              
-           
+        std::vector<Tile> res = {};                                         
         Tile tile = board.get(p);
         res.push_back(tile);                    
         if( p == position){                
@@ -276,8 +271,7 @@ class Labyrinth {
         return s;
     }
     
-    std::string html(){  
-        //board[position.i][position.j] = ant_tiles[int(direction)];        
+    std::string html(){          
         std::string s = "<style> .tile { position: absolute;  } </style>\n";
         s += "<table style='line-height: 0pt;'>\n";
         for(int i = 0 ; i < board.size() ; i++) {
@@ -413,17 +407,10 @@ class Labyrinth {
         message = "";
         return tile;
     }
-    
-    Direction direct(){
-        Direction result=Direction(direction);
-        message="";
-        return result;
-    }
 
     bool prend() {
         if ( carry == Tile::Void and regarde() == Tile::Rock ) {
             carry = Tile::Rock;
-            //board.set(position, Tile::Carry)
             board.set(devant(), Tile::Void);
             message = "";
             return true;
@@ -437,11 +424,7 @@ class Labyrinth {
              (regarde() == Tile::Void or
               regarde() == Tile::Web or
               regarde() == Tile::SmallWeb or
-              regarde() == Tile::SmallRock or
-              regarde() == Tile::FootN or
-              regarde() == Tile::FootE or
-              regarde() == Tile::FootS or
-              regarde() == Tile::FootW )) {
+              regarde() == Tile::SmallRock)) {
             carry = Tile::Void;
             board.set(devant(), Tile::Rock);
             message = "";
@@ -450,17 +433,6 @@ class Labyrinth {
         message = "Je ne peux pas poser.";
         return false;
     }
-    
-    bool sow(Tile feet){
-        Tile tile = board.get(position);
-        if ( tile == Tile::Exit ) {
-            message = "";
-            return false;
-        }
-        board.set(position, feet);
-        return true;
-    }
-    
     
     bool sow() {
         Tile tile = board.get(position);
@@ -511,7 +483,6 @@ class Player {
     LabyrinthView &view;
     public: // for debuging
     Labyrinth original_value;
-    Labyrinth present_value;
     std::vector<Labyrinth> history;
     int time;
 
@@ -533,7 +504,6 @@ class Player {
     Player(LabyrinthView &_view):
         view(_view),
         original_value(view.value),
-        present_value(view.value),
         play_direction(PlayDirection::Forward),
         play_fps(1),
         timer(std::bind(&Player::tick, this), play_fps) {
@@ -556,7 +526,7 @@ class Player {
 
     void set_value(Labyrinth value) {
         if ( history.size() > 10000 )
-            throw std::runtime_error("Votre programme a pris plus de 10000 étapes");
+            throw std::runtime_error("Votre programme a pris plus de 1000 étapes");
         history.push_back(value);
         if (not timer.running() and time == history.size() - 2 ) {
             time++;
@@ -677,10 +647,6 @@ class LabyBaseApp {
         auto res = value.sow();
         player.set_value(value);
         return res;
-    }
-    
-    auto direct() {
-        return player.get_value().direct();
     }
     
     auto regarde() {
