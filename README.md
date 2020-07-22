@@ -43,4 +43,4 @@ Run:
     make tests
 
 Again, this is primitive, assuming g++ and xwidgets and stuff directly
-in the standard include path, or $(CONDA_PREFIX)/include.    
+in the standard include path, or $(CONDA_PREFIX)/include.

@@ -7,8 +7,6 @@
 #include <sstream>
 #include <vector>
 #include <string>
-#include <ctype.h>
-#include <algorithm>    // std::find
 #include "timer.hpp"
 
 const std::string LABY_FILE = __FILE__;
@@ -16,11 +14,11 @@ const std::string LABY_BASENAME = "include/laby/laby.hpp";
 const std::string LABY_PREFIX   = LABY_FILE.substr(0, LABY_FILE.length()- LABY_BASENAME.length());
 const std::string LABY_SHAREDIR = LABY_PREFIX+"share/laby/";
 const std::string LABY_TILEDIR  = LABY_SHAREDIR+"tiles/";
-const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels";
+const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels/";
 bool use_inline_svg=true;
 std::vector<std::string> svg_images;
 
-bool moonwalk=true;
+
 
 std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
 {
@@ -166,12 +164,12 @@ class Board : public std::vector<std::vector<Tile>> {
 class Labyrinth {
     Board board;
     Position position;
-    //Direction direction = Direction::North;
+    Direction direction = Direction::North;
     Tile carry = Void;
     std::string message;
     bool _won = false;
-    public:
-    Direction direction = Direction::North;
+    public:    
+    bool leave_steps=true;
     //////////////////////////////////////////////////////////////////////////
     // Constructors
     Labyrinth() {
@@ -242,14 +240,14 @@ class Labyrinth {
             s += "\n";
         }
         return s;
-    }    
+    }
 
     std::string html() {
-        std::string s = "<table style='line-height: 0pt;'>\n";                
+        std::string s = "<table style='line-height: 0pt;'>\n";
         for ( auto line: view() ) {
             s += "    <tr>\n";
             for (int j=0; j<line.size(); j++ ) {
-            	s += "        <td>"+svg_image(line[j])+"</td>\n";
+                s += "        <td>"+svg_image(line[j])+"</td>\n";
             }
             s += "    </tr>\n";
         }
@@ -380,16 +378,9 @@ class Labyrinth {
         return tile;
     }
     
-    Direction direct(){
-        Direction result=Direction(direction);
-        message="";
-        return result;
-    }
-
     bool prend() {
         if ( carry == Tile::Void and regarde() == Tile::Rock ) {
             carry = Tile::Rock;
-            //board.set(position, Tile::Carry)
             board.set(devant(), Tile::Void);
             message = "";
             return true;
@@ -418,12 +409,12 @@ class Labyrinth {
     }
     
     bool sow_steps(){
-        if(moonwalk){
+        if(leave_steps){
             switch(direction) {
                 case Direction::North: return sow(Tile::FootN);  break;
-                case Direction::East:  return sow(Tile::FootE); break;
+                case Direction::East:  return sow(Tile::FootE);  break;
                 case Direction::South: return sow(Tile::FootS);  break;
-                case Direction::West:  return sow(Tile::FootW); break;
+                case Direction::West:  return sow(Tile::FootW);  break;
                 default : return false;
             }
         }
@@ -536,7 +527,7 @@ class Player {
 
     void set_value(Labyrinth value) {
         if ( history.size() > 10000 )
-            throw std::runtime_error("Votre programme a pris plus de 10000 étapes");
+            throw std::runtime_error("Votre programme a pris plus de 1000 étapes");
         history.push_back(value);
         if (not timer.running() and time == history.size() - 2 ) {
             time++;
@@ -571,14 +562,14 @@ class Player {
     
     void hide_step() {
         present_value = view.value;
-        if(moonwalk){moonwalk=false;}
-                else{moonwalk=true;}
+        if(leave_steps){leave_steps=false;}
+                else{leave_steps=true;}
         auto randomized = present_value;
         randomized.randomize();
         history[time] = randomized;
         //svg_image[]=
         update();
-        std::cout << moonwalk << std::endl;
+        std::cout << leave_steps << std::endl;
         play_direction = PlayDirection::Forward;
         timer.set_fps(play_fps);
     }
@@ -676,11 +667,7 @@ class LabyBaseApp {
         auto res = value.sow_steps();
         player.set_value(value);
         return res;
-    }
-    
-    auto direct() {
-        return player.get_value().direct();
-    }
+    }    
     
     auto regarde() {
         return player.get_value().regarde();
