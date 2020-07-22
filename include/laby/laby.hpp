@@ -168,7 +168,7 @@ class Labyrinth {
     std::string message;
     bool _won = false;
     public:
-    
+
     //////////////////////////////////////////////////////////////////////////
     // Constructors
     Labyrinth() {
