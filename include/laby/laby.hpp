@@ -167,7 +167,7 @@ class Labyrinth {
     std::string message;
     bool _won = false;
     public:
-    bool leave_steps=true;
+    bool _leave_steps=true;
     //////////////////////////////////////////////////////////////////////////
     // Constructors
     Labyrinth() {
@@ -400,9 +400,9 @@ class Labyrinth {
         return false;
     }
         
-    bool leavesteps(){
-        if(leave_steps){
-            leave_steps = not leave_steps;
+    bool leave_steps(){
+        if(_leave_steps){
+            _leave_steps = not _leave_steps;
             switch(direction) {
                 case Direction::North: return sow(Tile::FootN);  break;
                 case Direction::East:  return sow(Tile::FootE);  break;
@@ -561,13 +561,13 @@ class Player {
     
     void hide_step() {
         present_value = view.value;
-        leave_steps = not leave_steps;
+        _leave_steps = not leave_steps;
         auto randomized = present_value;
         randomized.randomize();
         history[time] = randomized;
         //svg_image[]=
         update();
-        std::cout << leave_steps << std::endl;
+        std::cout << _leave_steps << std::endl;
         play_direction = PlayDirection::Forward;
         timer.set_fps(play_fps);
     }
