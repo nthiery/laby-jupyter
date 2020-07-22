@@ -22,7 +22,8 @@ auto gauche()  { return app -> gauche();  }
 auto pose()    { return app -> pose();    }
 auto prend()   { return app -> prend();   }
 auto seme()    { return app -> sow(); }
-auto trace()   { return app -> leave_steps(); }
+auto trace_de_pas()    { return app -> footstep();  }
+auto traces_de_pas()   { return app -> footsteps(); }
 auto ouvre()   { return app -> ouvre();   }
 auto regarde() { return app -> regarde(); }
 bool a_gagne() { return app -> won();     }

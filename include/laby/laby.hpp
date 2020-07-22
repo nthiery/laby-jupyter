@@ -362,6 +362,7 @@ class Labyrinth {
              tile_devant == Tile::Rock or
              tile_devant == Tile::Exit or
              tile_devant == Tile::Wall) {
+            //Rajouter le mode laisser une trace ici!!
             message = "Je ne peux pas avancer.";
             return false;
         }
@@ -388,9 +389,9 @@ class Labyrinth {
     }
 
     bool pose() {
-        if ( carry == Tile::Rock and
-             (regarde() != Tile::Rock or
-              regarde() != Tile::Exit) ) {
+        if ( carry == Tile::Rock and not
+             (regarde() == Tile::Rock or
+              regarde() == Tile::Exit) ) {
             carry = Tile::Void;
             board.set(devant(), Tile::Rock);
             message = "";
@@ -401,8 +402,8 @@ class Labyrinth {
     }
         
     bool leave_steps(){
-        if(_leave_steps){
-            _leave_steps = not _leave_steps;
+        if(_footsteps){
+            _footsteps = not _footsteps;
             switch(direction) {
                 case Direction::North: return sow(Tile::FootN);  break;
                 case Direction::East:  return sow(Tile::FootE);  break;
@@ -416,8 +417,8 @@ class Labyrinth {
     }
     
     bool leavesteps(bool flag){
-        leave_steps = flag;
-        if(leave_steps){
+        _footsteps = flag;
+        if(_footsteps){
             switch(direction) {
                 case Direction::North: return sow(Tile::FootN);  break;
                 case Direction::East:  return sow(Tile::FootE);  break;
@@ -660,7 +661,7 @@ class LabyBaseApp {
         return res;
     }
     
-    auto sow_steps(){
+    auto leave_steps(){
         auto value = player.get_value();
         auto res = value.sow_steps();
         player.set_value(value);
