@@ -86,15 +86,18 @@ enum class Direction { North, West, South, East };
 std::vector<Position> directions = { {-1,0}, {0,-1}, {1,0}, {0,1} };
 
 enum Tile {
-    AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb
+    AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb,
+    FootN,FootS,FootE,FootW
 };
 
 // Assumption: fake tiles are rendered as void
 std::vector<std::string> tilenames = {
     "ant-e", "ant-n", "ant-s", "ant-w", "exit", "nrock", "nweb", "rock", "void", "wall", "web", "void", "void", "void"
+    ,"foot-n","foot-s","foot-e","foot-w"
 };
 std::vector<std::string> tilechars = {
-    u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W"
+    u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W","N","S","E","W"
+    
 };
 
 enum PlayDirection { Forward, Backward, None };
@@ -164,7 +167,7 @@ class Labyrinth {
     std::string message;
     bool _won = false;
     public:
-
+    bool _leave_steps=true;
     //////////////////////////////////////////////////////////////////////////
     // Constructors
     Labyrinth() {
@@ -359,6 +362,7 @@ class Labyrinth {
              tile_devant == Tile::Rock or
              tile_devant == Tile::Exit or
              tile_devant == Tile::Wall) {
+            //Rajouter le mode laisser une trace ici!!
             message = "Je ne peux pas avancer.";
             return false;
         }
@@ -385,11 +389,9 @@ class Labyrinth {
     }
 
     bool pose() {
-        if ( carry == Tile::Rock and
-             (regarde() == Tile::Void or
-              regarde() == Tile::Web or
-              regarde() == Tile::SmallWeb or
-              regarde() == Tile::SmallRock)) {
+        if ( carry == Tile::Rock and not
+             (regarde() == Tile::Rock or
+              regarde() == Tile::Exit) ) {
             carry = Tile::Void;
             board.set(devant(), Tile::Rock);
             message = "";
@@ -398,16 +400,50 @@ class Labyrinth {
         message = "Je ne peux pas poser.";
         return false;
     }
-
-    bool sow() {
-        Tile tile = board.get(position);
-        if ( tile == Tile::Web or
-             tile == Tile::Exit ) {
-            message = "Je ne peux pas semer.";
+        
+    bool leave_steps(){
+        if(_footsteps){
+            _footsteps = not _footsteps;
+            switch(direction) {
+                case Direction::North: return sow(Tile::FootN);  break;
+                case Direction::East:  return sow(Tile::FootE);  break;
+                case Direction::South: return sow(Tile::FootS);  break;
+                case Direction::West:  return sow(Tile::FootW);  break;
+                default : return false;
+            }
+        }
+        else{return sow(Tile::Void);}
+        return true;
+    }
+    
+    bool leavesteps(bool flag){
+        _footsteps = flag;
+        if(_footsteps){
+            switch(direction) {
+                case Direction::North: return sow(Tile::FootN);  break;
+                case Direction::East:  return sow(Tile::FootE);  break;
+                case Direction::South: return sow(Tile::FootS);  break;
+                case Direction::West:  return sow(Tile::FootW);  break;
+                default : return false;
+            }
+        }
+        else{return sow(Tile::Void);}
+        return true;
+    }
+    
+    bool sow(Tile tile){
+        Tile position_tile = board.get(position);
+        if ( position_tile == Tile::Exit ) {
+            message = "";
             return false;
         }
-        board.set(position, Tile::SmallRock);
+        board.set(position, tile);
         return true;
+    }
+    
+    
+    bool sow() {
+        return sow(Tile::SmallRock);
     }
 
     bool ouvre() {
@@ -523,6 +559,19 @@ class Player {
         time = history.size() - 1;
         update();
     }
+    
+    void hide_step() {
+        present_value = view.value;
+        _leave_steps = not leave_steps;
+        auto randomized = present_value;
+        randomized.randomize();
+        history[time] = randomized;
+        //svg_image[]=
+        update();
+        std::cout << _leave_steps << std::endl;
+        play_direction = PlayDirection::Forward;
+        timer.set_fps(play_fps);
+    }
 
     void step_backward() {
         if ( time > 0 ) {
@@ -611,6 +660,14 @@ class LabyBaseApp {
         player.set_value(value);
         return res;
     }
+    
+    auto leave_steps(){
+        auto value = player.get_value();
+        auto res = value.sow_steps();
+        player.set_value(value);
+        return res;
+    }    
+    
     auto regarde() {
         return player.get_value().regarde();
     }
