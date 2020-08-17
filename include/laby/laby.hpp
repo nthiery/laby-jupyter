@@ -235,21 +235,51 @@ class Labyrinth {
             s += "\n";
         }
         return s;
-    }
+    }    
 
-    std::string html() {
-        std::string s = "<table style='line-height: 0pt;'>\n";
-        for ( auto line: view() ) {
+    std::vector<Tile> tiles_at_position(Position p) {
+        std::vector<Tile> res = {};                                         
+        Tile tile = board.get(p);
+        res.push_back(tile);                    
+        if( p == position){                
+           res.push_back(ant_tiles[int(direction)]);
+           if(carry != Tile::Void){
+                res.push_back(carry);
+           }
+        }                            
+        return res;
+    }
+    
+    std::string tiles_to_html(std::vector<Tile> tiles)  {       
+        std::string s = "";
+        std::string temp = "";        
+        for(int i=tiles.size()-1; i>=0; i--) {                    
+            if(i > 0){                
+                s = "<div style='position: relative;'> " + svg_image(tiles[i]) + " </div>" + s;
+                int index = s.find("height=");                
+                s.insert(index, " class='tile' ");
+            }
+            else{
+                s += svg_image(tiles[i]);
+            }
+        }
+        s = " <td>" + s;
+        s += "</td>\n";
+        return s;
+    }
+    
+    std::string html(){          
+        std::string s = "<style> .tile { position: absolute;  } </style>\n";
+        s += "<table style='line-height: 0pt;'>\n";
+        for(int i = 0 ; i < board.size() ; i++) {
             s += "    <tr>\n";
-            for (int j=0; j<line.size(); j++ ) {
-                s += "        <td>"+svg_image(line[j])+"</td>\n";
+            for(int j = 0 ; j < board[i].size() ; j++) {
+                s += "       " + tiles_to_html(tiles_at_position(Position(i,j)));
             }
             s += "    </tr>\n";
         }
         s+="</table>\n";
         s+="<pre>";
-        if ( carry == Tile::Rock )
-            s += "Je porte un rocher. ";
         if ( message.empty() )
             s += " ";
         s += message;
@@ -599,18 +629,21 @@ class LabyBaseApp {
         player.set_value(value);
         return res;
     }
+    
     auto pose() {
         auto value = player.get_value();
         auto res = value.pose();
         player.set_value(value);
         return res;
     }
+    
     auto sow() {
         auto value = player.get_value();
         auto res = value.sow();
         player.set_value(value);
         return res;
     }
+    
     auto regarde() {
         return player.get_value().regarde();
     }
