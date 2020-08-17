@@ -7,6 +7,8 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <dirent.h>
+#include <sys/types.h>
 #include "timer.hpp"
 
 const std::string LABY_FILE = __FILE__;
@@ -17,6 +19,7 @@ const std::string LABY_TILEDIR  = LABY_SHAREDIR+"tiles/";
 const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels/";
 bool use_inline_svg=true;
 std::vector<std::string> svg_images;
+std::vector<std::string> list_levels;
 
 std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
 {
@@ -42,6 +45,20 @@ std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
     if (q<=start+leng || leng==std::string::npos){ max=i; }
     if (min==std::string::npos || max==std::string::npos) { return ""; }
     return str.substr(min,max-min);
+}
+
+std::vector<std::string> levels(){
+   struct dirent *entry;
+   DIR *dir = opendir(LABY_LEVELDIR.c_str());
+   
+   if (dir == NULL) {
+      return list_levels;
+   }
+   while ((entry = readdir(dir)) != NULL) {
+       list_levels.push_back(entry->d_name);
+   }
+   closedir(dir);
+    return list_levels;
 }
 
 unsigned char utf8_len(const std::string& str)
