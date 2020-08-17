@@ -125,10 +125,10 @@ std::string filename(Tile tile) {
 
 std::string svg_image(Tile tile) {
     if ( use_inline_svg ) {
-                if ( svg_images.size() == 0 )
+            if ( svg_images.size() == 0 )
             for ( auto tilename: tilenames )
                 svg_images.push_back(read_file(LABY_TILEDIR + tilename + ".svg"));
-        return svg_images[tile];    
+        return svg_images[tile];
     }
     return "<img src='"+filename(tile)+"' width=32 height=32>";
 }
