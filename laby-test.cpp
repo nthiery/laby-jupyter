@@ -15,6 +15,13 @@ void testSvgImage() {
     svg_image(Tile::Exit);
 }
 
+void testLevels(){
+    std::vector<std::string> basic_case= {"0.laby","1a.laby","1b.laby","1c.laby","2a.laby","2b.laby","2c.laby","3a.laby","3b.laby","4a.laby","4b.laby","counting-the-rocks.laby", "this-is-crazy.laby"};
+    ASSERT( std::find( levels()("1a.laby")) );
+    ASSERT( levels().find("0.laby") );
+    
+}
+
 void testFilename() {
     ASSERTEQ(filename(Tile::Wall), "/nbextensions/laby/wall.svg");
 }
@@ -149,6 +156,29 @@ void testLabyrinth() {
            u8"o . . . . . o\n"
            u8"o . . . . . o\n"
            u8"o o o o o o o\n");
+}
+
+void testTiles_at_position(){       
+    auto l = Labyrinth(u8". o → r ẃ x");  
+    ASSERT( l.tiles_at_position(Position(0,0)) == vector<Tile>({}) );
+    ASSERT( l.tiles_at_position(Position(0,1)) == vector<Tile>({Tile::Wall}) );
+    ASSERT( l.tiles_at_position(Position(0,2)) ==  vector<Tile>({Tile::AntE}) );
+    ASSERT( l.prend());
+    ASSERT( l.tiles_at_position(Position(0,2)) == vector<Tile>({Tile::AntE,Tile::Rock}) );
+    ASSERT( l.avance());
+    ASSERT( l.avance());
+    ASSERT( l.tiles_at_position(Position(0,4)) == vector<Tile>({Tile::SmallWeb,Tile::AntE,Tile::Rock}) );    
+    /* TODO: retourner la fourmi et poser le rocher puis utiliser la porte exit*/    
+}
+
+void testTiles_to_html(){
+    auto l = Labyrinth();
+    use_inline_svg = false;
+    vector<Tile> empty = {};
+    ASSERTEQ( l.tiles_to_html({}) , "" );
+    ASSERTEQ( l.tiles_to_html({Tile::Void}) , " <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>\n" );
+    ASSERTEQ( l.tiles_to_html({Tile::AntS}) , " <td><img src='/nbextensions/laby/ant-s.svg' width=32 height=32></td>\n" );
+    ASSERTEQ( l.tiles_to_html({Tile::Void,Tile::AntN,Tile::Rock}) , " <td><div style='position: relative;'> <img src='/nbextensions/laby/rock.svg' width=32 class='tile' height=32> </div><div style='position: relative;'> <img src='/nbextensions/laby/ant-n.svg' width=32 class='tile' height=32> </div><img src='/nbextensions/laby/void.svg' width=32 height=32></td>\n" );
 }
 
 void testSow() {
@@ -311,7 +341,8 @@ void testHtml() {
     Labyrinth l(s);
     l.pose();
     use_inline_svg = false;
-    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt;'>
+    ASSERTEQ(l.html(), R"html(<style> .tile { position: absolute;  } </style>
+<table style='line-height: 0pt;'>
     <tr>
         <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
         <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
@@ -342,7 +373,7 @@ void testHtml() {
     <tr>
         <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
         <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/ant-n.svg' width=32 height=32></td>
+        <td><div style='position: relative;'> <img src='/nbextensions/laby/ant-n.svg' width=32  class='tile' height=32> </div><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
         <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
         <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
         <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
@@ -402,8 +433,11 @@ void testRandomizedPlayer() {
 int main() {
     testSvgImage();
     testFilename();
+    testLevels();    
     testViewAt();
     testLabyrinth();
+    testTiles_at_position();
+    testTiles_to_html();
     testSow();
     testLabyrinthValueSemantic();
     testLabyApp();
