@@ -15,15 +15,14 @@ void testSvgImage() {
     svg_image(Tile::Exit);
 }
 
-void testLevels(){
-    std::vector<std::string> basic_case= {"0.laby","1a.laby","1b.laby","1c.laby","2a.laby","2b.laby","2c.laby","3a.laby","3b.laby","4a.laby","4b.laby","counting-the-rocks.laby", "this-is-crazy.laby"};
-    ASSERT( std::find( levels()("1a.laby")) );
-    ASSERT( levels().find("0.laby") );
-    
-}
-
 void testFilename() {
     ASSERTEQ(filename(Tile::Wall), "/nbextensions/laby/wall.svg");
+}
+
+void testLevels(){
+    std::vector<std::string> l = levels();
+    ASSERT( std::find( l.begin(), l.end(), "0.laby"  ) != l.end() );
+    ASSERT( std::find( l.begin(), l.end(), "1a.laby" ) != l.end() );
 }
 
 void testLabyrinth() {
