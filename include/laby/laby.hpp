@@ -7,6 +7,8 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <dirent.h>
+#include <sys/types.h>
 #include "timer.hpp"
 
 const std::string LABY_FILE = __FILE__;
@@ -42,6 +44,25 @@ std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
     if (q<=start+leng || leng==std::string::npos){ max=i; }
     if (min==std::string::npos || max==std::string::npos) { return ""; }
     return str.substr(min,max-min);
+}
+
+std::vector<std::string> levels() {
+    struct dirent *entry;
+    DIR *dir = opendir(LABY_LEVELDIR.c_str());
+    if (dir == NULL)
+        return {};
+
+    std::vector<std::string> levels;
+    std::string suffixe = ".laby";
+    
+    while ((entry = readdir(dir)) != NULL ){
+        std::string temp = entry->d_name;
+            if(temp.find(suffixe) != std::string::npos) {            
+                levels.push_back(entry->d_name);
+            }
+    }
+    closedir(dir);
+    return levels;
 }
 
 unsigned char utf8_len(const std::string& str)
@@ -521,7 +542,7 @@ class Player {
 
     void set_value(Labyrinth value) {
         if ( history.size() > 10000 )
-            throw std::runtime_error("Votre programme a pris plus de 1000 étapes");
+            throw std::runtime_error("Votre programme a pris plus de 10000 étapes");
         history.push_back(value);
         if (not timer.running() and time == history.size() - 2 ) {
             time++;
