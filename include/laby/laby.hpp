@@ -87,16 +87,16 @@ std::vector<Position> directions = { {-1,0}, {0,-1}, {1,0}, {0,1} };
 
 enum Tile {
     AntE, AntN, AntS, AntW, Exit, SmallRock, SmallWeb, Rock, Void, Wall, Web, Outside, RandomRock, RandomWeb,
-    FootN,FootS,FootE,FootW
+    FootN, FootS, FootE, FootW
 };
 
 // Assumption: fake tiles are rendered as void
 std::vector<std::string> tilenames = {
     "ant-e", "ant-n", "ant-s", "ant-w", "exit", "nrock", "nweb", "rock", "void", "wall", "web", "void", "void", "void"
-    ,"foot-n","foot-s","foot-e","foot-w"
+    ,"foot-n", "foot-s", "foot-e", "foot-w"
 };
 std::vector<std::string> tilechars = {
-    u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W","N","S","E","W"
+    u8"→", u8"↑", u8"↓", u8"←", "x", "ŕ", "ẃ", "r", ".", "o", "w", " ", "R", "W", "N", "S", "E", "W"
     
 };
 
@@ -362,7 +362,6 @@ class Labyrinth {
              tile_devant == Tile::Rock or
              tile_devant == Tile::Exit or
              tile_devant == Tile::Wall) {
-            //Rajouter le mode laisser une trace ici!!
             message = "Je ne peux pas avancer.";
             return false;
         }
@@ -391,7 +390,8 @@ class Labyrinth {
     bool pose() {
         if ( carry == Tile::Rock and not
              (regarde() == Tile::Rock or
-              regarde() == Tile::Exit) ) {
+              regarde() == Tile::Exit or
+              regarde() == Tile::Wall) ) {
             carry = Tile::Void;
             board.set(devant(), Tile::Rock);
             message = "";
@@ -401,24 +401,20 @@ class Labyrinth {
         return false;
     }
         
-    bool leave_steps(){
-        if(_footsteps){
-            _footsteps = not _footsteps;
-            switch(direction) {
-                case Direction::North: return sow(Tile::FootN);  break;
-                case Direction::East:  return sow(Tile::FootE);  break;
-                case Direction::South: return sow(Tile::FootS);  break;
-                case Direction::West:  return sow(Tile::FootW);  break;
-                default : return false;
-            }
+    bool footstep(){
+        switch(direction) {
+            case Direction::North: return sow(Tile::FootN);  break;
+            case Direction::East:  return sow(Tile::FootE);  break;
+            case Direction::South: return sow(Tile::FootS);  break;
+            case Direction::West:  return sow(Tile::FootW);  break;
+            default : return false;
         }
-        else{return sow(Tile::Void);}
         return true;
     }
     
-    bool leavesteps(bool flag){
-        _footsteps = flag;
-        if(_footsteps){
+    bool footsteps(bool flag){
+        _leave_steps = flag;
+        if(_leave_steps){
             switch(direction) {
                 case Direction::North: return sow(Tile::FootN);  break;
                 case Direction::East:  return sow(Tile::FootE);  break;
@@ -560,13 +556,13 @@ class Player {
         update();
     }
     
-    void hide_step() {
+    void erase_step() {
+        //Supprimer ce qu'il y a dans le tableau avec les trace de pas   
         present_value = view.value;
         _leave_steps = not leave_steps;
         auto randomized = present_value;
         randomized.randomize();
-        history[time] = randomized;
-        //svg_image[]=
+        history[time] = randomized;        
         update();
         std::cout << _leave_steps << std::endl;
         play_direction = PlayDirection::Forward;
@@ -661,9 +657,16 @@ class LabyBaseApp {
         return res;
     }
     
-    auto leave_steps(){
+    auto footstep(){
         auto value = player.get_value();
-        auto res = value.sow_steps();
+        auto res = value.footstep();
+        player.set_value(value);
+        return res;
+    }
+    
+    auto footsteps(bool flag){
+        auto value = player.get_value();
+        auto res = value.footsteps(bool flag);
         player.set_value(value);
         return res;
     }    
