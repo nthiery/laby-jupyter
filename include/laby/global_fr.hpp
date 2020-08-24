@@ -15,18 +15,18 @@ auto PetiteToile = Tile::SmallWeb;
 auto Sortie      = Tile::Exit;
 auto Mur         = Tile::Wall;
 auto Vide        = Tile::Void;
-auto debut()           { return app -> debut();              }
-auto avance()          { return app -> avance();             }
-auto droite()          { return app -> droite();             }
-auto gauche()          { return app -> gauche();             }
-auto pose()            { return app -> pose();               }
-auto prend()           { return app -> prend();              }
-auto seme()            { return app -> sow();                }
-auto trace_de_pas()    { return app -> footstep();           }
-auto traces_de_pas()   { return app -> footsteps(bool flag); }
-auto ouvre()           { return app -> ouvre();              }
-auto regarde()         { return app -> regarde();            }
-bool a_gagne()         { return app -> won();                }
+auto debut()                    { return app -> debut();              }
+auto avance()                   { return app -> avance();             }
+auto droite()                   { return app -> droite();             }
+auto gauche()                   { return app -> gauche();             }
+auto pose()                     { return app -> pose();               }
+auto prend()                    { return app -> prend();              }
+auto seme()                     { return app -> sow();                }
+auto trace_de_pas()             { return app -> footstep();           }
+auto traces_de_pas(bool flag)   { return app -> footsteps(bool flag); }
+auto ouvre()                    { return app -> ouvre();              }
+auto regarde()                  { return app -> regarde();            }
+bool a_gagne()                  { return app -> won();                }
 
 void LABY(std::string s) {
     app = laby_level(s);
