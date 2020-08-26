@@ -366,6 +366,9 @@ class Labyrinth {
             return false;
         }
         message = "";
+        if(_leave_steps){
+            footstep();
+        }
         position = devant();
         return true;
     }
@@ -414,16 +417,6 @@ class Labyrinth {
     
     bool footsteps(bool flag){
         _leave_steps = flag;
-        if(_leave_steps){
-            switch(direction) {
-                case Direction::North: return sow(Tile::FootN);  break;
-                case Direction::East:  return sow(Tile::FootE);  break;
-                case Direction::South: return sow(Tile::FootS);  break;
-                case Direction::West:  return sow(Tile::FootW);  break;
-                default : return false;
-            }
-        }
-        else{return sow(Tile::Void);}
         return true;
     }
     
@@ -556,17 +549,18 @@ class Player {
         update();
     }
     
-    void erase_step() {
-        //Supprimer ce qu'il y a dans le tableau avec les trace de pas   
-        present_value = view.value;
-        _leave_steps = not leave_steps;
-        auto randomized = present_value;
-        randomized.randomize();
-        history[time] = randomized;        
-        update();
-        std::cout << _leave_steps << std::endl;
-        play_direction = PlayDirection::Forward;
-        timer.set_fps(play_fps);
+    void erase_footsteps() {
+        //Supprimer ce qu'il y a dans le tableau avec les trace de pas           
+        //Double boucle pour vider
+        Board board = Board();
+        for(int i = 0; i < board.size(); i++){
+            for(int j = 0; j < board[i].size(); j++){
+                if( board.get(Position(i,j)) == (Tile::FootN or Tile::FootS or Tile::FootE or Tile::FootW)){
+                    board.set(Position(i,j),Tile::Void);
+                }
+            }
+        }
+        update();        
     }
 
     void step_backward() {
@@ -666,7 +660,7 @@ class LabyBaseApp {
     
     auto footsteps(bool flag){
         auto value = player.get_value();
-        auto res = value.footsteps(bool flag);
+        auto res = value.footsteps(flag);
         player.set_value(value);
         return res;
     }    

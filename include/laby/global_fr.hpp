@@ -23,7 +23,7 @@ auto pose()                     { return app -> pose();               }
 auto prend()                    { return app -> prend();              }
 auto seme()                     { return app -> sow();                }
 auto trace_de_pas()             { return app -> footstep();           }
-auto traces_de_pas(bool flag)   { return app -> footsteps(bool flag); }
+auto traces_de_pas(bool flag)   { return app -> footsteps(flag); }
 auto ouvre()                    { return app -> ouvre();              }
 auto regarde()                  { return app -> regarde();            }
 bool a_gagne()                  { return app -> won();                }
