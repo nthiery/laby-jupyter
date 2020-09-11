@@ -7,6 +7,8 @@ channels:
 dependencies:
 - notebook
 - xeus-cling
+- xproperty=0.10.1
+- widgetsnbextension
 - xwidgets
 - pip
 - pip:
