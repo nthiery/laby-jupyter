@@ -69,8 +69,8 @@ class LabyrinthSVGView: public LabyrinthView {
             }
         }
         for (int i=0; i<size.i; i++)
-            for (int j=0; j<size.j; j++)
-                cells[i][j].value = svg_image(value.get(Position(i,j)));
+	    for (int j=0; j<size.j; j++)
+	        cells[i][j].value = tiles_to_html(value.tiles_at_position(Position(i,j)));
     }
 };
 
