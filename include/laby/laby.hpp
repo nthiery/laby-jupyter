@@ -647,21 +647,21 @@ class LabyBaseApp {
         player.set_value(value);
         return res;
     }
-    
+
     auto pose() {
         auto value = player.get_value();
         auto res = value.pose();
         player.set_value(value);
         return res;
     }
-    
+
     auto sow() {
         auto value = player.get_value();
         auto res = value.sow();
         player.set_value(value);
         return res;
     }
-    
+
     auto regarde() {
         return player.get_value().regarde();
     }
