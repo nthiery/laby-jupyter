@@ -158,8 +158,9 @@ void testLabyrinth() {
 }
 
 void testTiles_at_position(){       
-    auto l = Labyrinth(u8". o → r ẃ x");  
-    ASSERT( l.tiles_at_position(Position(0,0)) == vector<Tile>({}) );
+    use_inline_svg = false;
+    auto l = Labyrinth(u8". o → r ẃ x");
+    ASSERT( l.tiles_at_position(Position(0,0)) == vector<Tile>({Tile::Void}) );
     ASSERT( l.tiles_at_position(Position(0,1)) == vector<Tile>({Tile::Wall}) );
     ASSERT( l.tiles_at_position(Position(0,2)) ==  vector<Tile>({Tile::AntE}) );
     ASSERT( l.prend());
@@ -171,13 +172,12 @@ void testTiles_at_position(){
 }
 
 void testTiles_to_html(){
-    auto l = Labyrinth();
     use_inline_svg = false;
     vector<Tile> empty = {};
-    ASSERTEQ( l.tiles_to_html({}) , "" );
-    ASSERTEQ( l.tiles_to_html({Tile::Void}) , " <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>\n" );
-    ASSERTEQ( l.tiles_to_html({Tile::AntS}) , " <td><img src='/nbextensions/laby/ant-s.svg' width=32 height=32></td>\n" );
-    ASSERTEQ( l.tiles_to_html({Tile::Void,Tile::AntN,Tile::Rock}) , " <td><div style='position: relative;'> <img src='/nbextensions/laby/rock.svg' width=32 class='tile' height=32> </div><div style='position: relative;'> <img src='/nbextensions/laby/ant-n.svg' width=32 class='tile' height=32> </div><img src='/nbextensions/laby/void.svg' width=32 height=32></td>\n" );
+    ASSERTEQ( tiles_to_html({}) , "" );
+    ASSERTEQ( tiles_to_html({Tile::Void}) , "<img src='/nbextensions/laby/void.svg' width=32 height=32>" );
+    ASSERTEQ( tiles_to_html({Tile::AntS}) , "<img src='/nbextensions/laby/ant-s.svg' width=32 height=32>" );
+    ASSERTEQ( tiles_to_html({Tile::Void,Tile::AntN,Tile::Rock}) , "<div style='position: relative;'> <img src='/nbextensions/laby/rock.svg' width=32 height=32 style='position: absolute'> </div><div style='position: relative;'> <img src='/nbextensions/laby/ant-n.svg' width=32 height=32 style='position: absolute'> </div><img src='/nbextensions/laby/void.svg' width=32 height=32>" );
 }
 
 void testSow() {
@@ -340,52 +340,51 @@ void testHtml() {
     Labyrinth l(s);
     l.pose();
     use_inline_svg = false;
-    ASSERTEQ(l.html(), R"html(<style> .tile { position: absolute;  } </style>
-<table style='line-height: 0pt;'>
+    ASSERTEQ(l.html(), R"html(<table style='line-height: 0pt; margin: unset;'>
     <tr>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/exit.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
     </tr>
     <tr>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
     </tr>
     <tr>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
     </tr>
     <tr>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><div style='position: relative;'> <img src='/nbextensions/laby/ant-n.svg' width=32  class='tile' height=32> </div><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/ant-n.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/void.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
     </tr>
     <tr>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
-        <td><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
+        <td style='padding: 0; border-bottom: none;'><img src='/nbextensions/laby/wall.svg' width=32 height=32></td>
     </tr>
 </table>
 <pre>Je ne peux pas poser.</pre>
