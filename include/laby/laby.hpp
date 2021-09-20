@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <regex>
 #include <string>
 #include <dirent.h>
 #include <sys/types.h>
@@ -141,12 +142,13 @@ std::string filename(Tile tile) {
 
 std::string svg_image(Tile tile, std::string style="") {
     if ( use_inline_svg ) {
-        if (style != "")
-	    throw std::logic_error("Not implemented");
         if ( svg_images.size() == 0 )
             for ( auto tilename: tilenames )
                 svg_images.push_back(read_file(LABY_TILEDIR + tilename + ".svg"));
-        return svg_images[tile];
+	std::string svg_image = svg_images[tile];
+	if (style != "")
+	    svg_image = std::regex_replace(svg_image, std::regex("<svg"), "<svg style=\""+style+"\"");
+        return  svg_image;
     }
     std::string s = "<img src='"+filename(tile)+"' width=32 height=32";
     if (style != "")

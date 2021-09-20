@@ -12,7 +12,16 @@ const string s =
         u8"o o o o o o o\n";
 
 void testSvgImage() {
-    svg_image(Tile::Exit);
+    use_inline_svg = false;
+    ASSERTEQ(svg_image(Tile::Exit),
+             "<img src='/nbextensions/laby/exit.svg' width=32 height=32>");
+    ASSERTEQ(svg_image(Tile::Exit, "mystyle"),
+             "<img src='/nbextensions/laby/exit.svg' width=32 height=32 style='mystyle'>");
+    use_inline_svg = true;
+    ASSERTEQ(svg_image(Tile::Exit).substr(113,72),
+	     "<svg id=\"svg2\" xmlns=\"http://www.w3.org/2000/svg\" height=\"32\" width=\"32\"");
+    ASSERTEQ(svg_image(Tile::Exit, "mystyle").substr(113,88),
+	     "<svg style=\"mystyle\" id=\"svg2\" xmlns=\"http://www.w3.org/2000/svg\" height=\"32\" width=\"32\"");
 }
 
 void testFilename() {
