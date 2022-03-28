@@ -19,6 +19,7 @@ setup(
         #'Programming Language :: Python :: 2',
         #'Programming Language :: Python :: 3',
     ],
+    packages=[],
     data_files=[
         # like `jupyter nbextension install --sys-prefix`
         ("share/laby/levels",               glob.glob("share/laby/levels/*.laby")),
