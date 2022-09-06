@@ -1,0 +1,21 @@
+map:
+o o o o o o o o o o o o o o
+o r r r r r r r r r r r r o
+o r o o o o o o o o o o . o
+o r o . . . . . . . . o . o
+o r o o o o o o o o o o . o
+o . . . . . . . . . r o . o
+o o o o o o o o o o r o . o
+o → r r r r r r r r r o . o
+o o o o o o o o o o o o . o
+x r r r r r r r r r r r . o
+o o o o o o o o o o o o o o
+
+help:
+function
+
+title:
+text		Zig Zag de cailloux
+
+comment:
+text		Now you are on your own! But you can get inspiration from the previous challenge:-)
