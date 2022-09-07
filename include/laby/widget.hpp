@@ -78,6 +78,7 @@ class PlayerView {
 
     public:
     xw::hbox   widget;
+    xw::slider<int> speed_slider;
 
     public:
     PlayerView(Player &player) {
@@ -138,7 +139,7 @@ class PlayerView {
         speed_label.value = "Speed: ";
         widget.add(std::move(speed_label));
 
-        auto speed_slider = xw::slider<int>();
+        speed_slider = xw::slider<int>();
         speed_slider.value = 1;
         speed_slider.min   = 0;
         speed_slider.step  = 1;
@@ -150,7 +151,7 @@ class PlayerView {
                                     }
                                     player.set_fps(fps);
                                 });
-        widget.add(std::move(speed_slider));
+        widget.add(speed_slider);
     }
     auto display() {
         return widget.display();
