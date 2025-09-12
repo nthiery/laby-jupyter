@@ -145,9 +145,9 @@ std::string svg_image(Tile tile, std::string style="") {
         if ( svg_images.size() == 0 )
             for ( auto tilename: tilenames )
                 svg_images.push_back(read_file(LABY_TILEDIR + tilename + ".svg"));
-	std::string svg_image = svg_images[tile];
-	if (style != "")
-	    svg_image = std::regex_replace(svg_image, std::regex("<svg"), "<svg style=\""+style+"\"");
+        std::string svg_image = svg_images[tile];
+        if (style != "")
+            svg_image = std::regex_replace(svg_image, std::regex("<svg"), "<svg style=\""+style+"\"");
         return  svg_image;
     }
     std::string s = "<img src='"+filename(tile)+"' width=32 height=32";
@@ -161,7 +161,7 @@ std::string tiles_to_html(std::vector<Tile> tiles)  {
     std::string temp = "";
     for(int i=tiles.size()-1; i>=0; i--) {
         if(i > 0){
-	    s += "<div style='position: relative;'> " + svg_image(tiles[i], "position: absolute") + " </div>";
+            s += "<div style='position: relative;'> " + svg_image(tiles[i], "position: absolute") + " </div>";
         }
         else{
             s += svg_image(tiles[i]);
@@ -278,8 +278,8 @@ class Labyrinth {
     std::vector<Tile> tiles_at_position(Position p) {
         std::vector<Tile> res = {};
         Tile tile = board.get(p);
-	if (tile != Tile::Void or p != position)
-	    res.push_back(tile);
+        if (tile != Tile::Void or p != position)
+            res.push_back(tile);
         if (p == position){
            res.push_back(ant_tiles[int(direction)]);
            if(carry != Tile::Void){
@@ -294,7 +294,7 @@ class Labyrinth {
         for(int i = 0 ; i < board.size() ; i++) {
             s += "    <tr>\n";
             for(int j = 0 ; j < board[i].size() ; j++) {
-	        s += "        <td style='padding: 0; border-bottom: none;'>" + tiles_to_html(tiles_at_position(Position(i,j)))+"</td>\n";
+                s += "        <td style='padding: 0; border-bottom: none;'>" + tiles_to_html(tiles_at_position(Position(i,j)))+"</td>\n";
             }
             s += "    </tr>\n";
         }
