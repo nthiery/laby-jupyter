@@ -21,6 +21,13 @@ const std::string LABY_LEVELDIR = LABY_SHAREDIR+"levels/";
 bool use_inline_svg=true;
 std::vector<std::string> svg_images;
 
+//////////////////////////////////////////////////////////////////////////////
+// Utilities for utf-8 strings
+
+/**
+ * Extract a substring of an utf-8 string
+ * @eturn the substring of str starting at start and of length leng
+ **/
 std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
 {
     if (leng==0) { return ""; }
@@ -47,20 +54,9 @@ std::string utf8_substr(const std::string& str, unsigned int start, size_t leng)
     return str.substr(min,max-min);
 }
 
-std::vector<std::string> levels() {
-    struct dirent *entry;
-    DIR *dir = opendir(LABY_LEVELDIR.c_str());
-    if (dir == NULL)
-        return {};
-
-    std::vector<std::string> levels;
-    while ((entry = readdir(dir)) != NULL)
-        levels.push_back(entry->d_name);
-
-    closedir(dir);
-    return levels;
-}
-
+/**
+ * Return the length of a utf-8 string
+ **/
 unsigned char utf8_len(const std::string& str)
 {
     unsigned int l=0;
@@ -76,6 +72,26 @@ unsigned char utf8_len(const std::string& str)
         else throw std::runtime_error("invalid utf8");
     }
     return l;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Returns the list of available laby levels
+ **/
+
+std::vector<std::string> levels() {
+    struct dirent *entry;
+    DIR *dir = opendir(LABY_LEVELDIR.c_str());
+    if (dir == NULL)
+        return {};
+
+    std::vector<std::string> levels;
+    while ((entry = readdir(dir)) != NULL)
+        levels.push_back(entry->d_name);
+
+    closedir(dir);
+    return levels;
 }
 
 struct Position {
@@ -494,6 +510,12 @@ class LabyrinthView {
 // add lock to garantee that no two threads touch the time and history
 // at the same time.
 
+
+/**
+ * Player: a class to store and (re)play the history of the game
+ *
+ * (analogue of a video player)
+ **/
 class Player {
     LabyrinthView &view;
     public: // for debuging
