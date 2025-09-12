@@ -7,6 +7,7 @@ channels:
 dependencies:
 - notebook
 - xeus-cling
+- gcc=9.4.0
 - xproperty=0.10.1
 - widgetsnbextension
 - xwidgets
